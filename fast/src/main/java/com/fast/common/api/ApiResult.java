@@ -3,8 +3,8 @@
  * @Title:  ApiResult.java   
  * @Package com.fast.common.supers   
  * @Description:   
- * @author: yuyanan  
- * @date:   2018年9月11日   
+ * @author yuyanan
+ * @date   2018年9月11日
  * @version V1.0 
  * @Copyright:  yuyanan
  * 
@@ -18,8 +18,8 @@ import lombok.Data;
 /**
  * api 返回类
  * 
- * @author: yuyanan
- * @date: 2018年9月11日
+ * @author yuyanan
+ * @date 2018年9月11日
  */
 @Data
 public class ApiResult {

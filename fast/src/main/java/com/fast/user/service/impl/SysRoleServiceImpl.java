@@ -10,8 +10,8 @@ import com.fast.user.service.SysRoleService;
 /**
  * 角色-服务实现类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Service
 public class SysRoleServiceImpl extends SuperServiceImpl<SysRoleDao, SysRole> implements SysRoleService {

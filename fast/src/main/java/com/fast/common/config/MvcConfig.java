@@ -3,8 +3,8 @@
 // * @Title:  MvcConfig.java   
 // * @Package com.fast.common.config   
 // * @Description:   
-// * @author: yuyanan  
-// * @date:   2018年9月12日   
+// * @author yuyanan
+// * @date   2018年9月12日
 // * @version V1.0 
 // * @Copyright:  yuyanan
 // * 
@@ -19,8 +19,8 @@
 //
 ///**    
 // *  
-// * @author: yuyanan
-// * @date:   2018年9月12日      
+// * @author yuyanan
+// * @date   2018年9月12日
 // */
 //@Configuration
 //

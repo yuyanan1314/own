@@ -10,8 +10,8 @@ import com.fast.user.service.SysLogService;
 /**
  * 系统日志-服务实现类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Service
 public class SysLogServiceImpl extends SuperServiceImpl<SysLogDao, SysLog> implements SysLogService {

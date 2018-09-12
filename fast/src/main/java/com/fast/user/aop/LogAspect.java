@@ -26,8 +26,8 @@ import com.fast.user.service.SysLogService;
 /**
  * 日志切面
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Aspect
 @Component

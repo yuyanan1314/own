@@ -9,8 +9,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * HttpContext工具
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 public class HttpContextTool {
 	public static HttpServletRequest getHttpServletRequest() {

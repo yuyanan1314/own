@@ -8,8 +8,8 @@ import lombok.Data;
 /**
  * 字典表
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @TableName("sys_dict")
 @Data

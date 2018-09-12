@@ -9,8 +9,8 @@ import lombok.Data;
 /**
  * 系统配置表
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @TableName("sys_config")
 @Data

@@ -24,8 +24,8 @@ import com.fast.user.service.SysMenuService;
 /**
  * 菜单管理-服务实现类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Service
 public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuDao, SysMenu> implements SysMenuService {

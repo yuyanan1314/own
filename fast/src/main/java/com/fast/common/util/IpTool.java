@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Ip工具类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 public class IpTool {
 

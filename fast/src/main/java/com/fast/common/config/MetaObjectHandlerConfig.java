@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 /**
  * mybatis-plus 填充配置
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Component
 public class MetaObjectHandlerConfig implements MetaObjectHandler  {

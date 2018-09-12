@@ -9,8 +9,8 @@ import com.fast.user.entity.SysConfig;
 /**
  * 系统配置表-服务类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 public interface SysConfigService extends SuperService<SysConfig> {
 

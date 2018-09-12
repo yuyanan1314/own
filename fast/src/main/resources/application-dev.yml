@@ -1,0 +1,100 @@
+# app
+server:
+    port: 9099
+    
+# log4j
+logging:
+  level:
+    com.yyn: debug
+    
+# Spring profiles configuration
+---
+spring:
+    profiles: local
+---
+spring:
+    profiles: prod
+---
+
+#spring configuration
+spring:
+
+  resources:
+    chain:
+      cache: false
+
+  # mvc configuration
+ # mvc:
+  #  static-path-pattern=/static/** 
+  #  static-locations=classpath:/static/
+
+  # Profile configuration
+  profiles:
+    active: dev
+    
+  # ThymeleafProperties
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+ # Datasource configuration
+  datasource:
+    url: jdbc:mysql://${DB_HOST:192.168.23.25}:${DB_PORT:3306}/yyn?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: bys2018
+    
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      filters: stat
+      initialSize: 10
+      maxActive: 100
+      maxWait: 60000
+      minIdle: 10
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: false
+      use-global-data-source-stat: true
+      filter:
+          stat:
+              log-slow-sql: true
+              slow-sql-millis: 2000
+
+# MyBatis configuration
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/dao/*Mapper.xml
+  # 如果是放在resource目录 classpath:/dao/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Dao.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.fast.*.entity
+  typeEnumsPackage: com.fast.entity.enums
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: uuid
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: IGNORED
+      #驼峰下划线转换
+      column-underline: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: mysql
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    
+

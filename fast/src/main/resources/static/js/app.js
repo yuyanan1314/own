@@ -23,7 +23,7 @@ layui.define([ 'jquery', 'layer', 'login' ], function(exports) {
 		if (!result || !result.code || !result.msg) {
 			layer.msg("返回值不正确");
 		}
-		if (result.code == '1') {
+		if (result.code == '0') {
 			if (success) {
 				success(result);
 			}
@@ -36,7 +36,7 @@ layui.define([ 'jquery', 'layer', 'login' ], function(exports) {
 	 * 默认失败处理
 	 */
 	var rollback_fail = function(result) {
-		layer.msg("错误码:[" + result.code + "],错误信息:" + result.msg);
+      layer.msg("错误信息[" + result.code + "]:" + result.msg);
 	}
 
 	exports('app', obj);

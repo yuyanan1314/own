@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * druid 配置
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Configuration
 public class DruidConfig {

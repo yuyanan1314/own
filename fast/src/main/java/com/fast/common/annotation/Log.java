@@ -9,8 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * 系统日志注解
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -3,8 +3,8 @@
  * @Title:  IErrorCode.java   
  * @Package com.fast.common.supers   
  * @Description:   
- * @author: yuyanan  
- * @date:   2018年9月11日   
+ * @author yuyanan
+ * @date   2018年9月11日
  * @version V1.0 
  * @Copyright:  yuyanan
  * 

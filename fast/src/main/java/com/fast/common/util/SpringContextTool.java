@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
  * SpringApplicationContext工具类
  * 以静态变量保存Spring ApplicationContext, 可在任何代码任何地方任何时候取出ApplicaitonContext.
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 @Slf4j
 @Service

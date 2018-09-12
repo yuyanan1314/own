@@ -3,8 +3,8 @@
  * @Title:  ApiErrorCode.java   
  * @Package com.fast.common.api   
  * @Description:   
- * @author: yuyanan  
- * @date:   2018年9月11日   
+ * @author yuyanan
+ * @date   2018年9月11日
  * @version V1.0 
  * @Copyright:  yuyanan
  * 
@@ -15,18 +15,22 @@ package com.fast.common.api;
 /**
  * api 返回码
  * 
- * @author: yuyanan
- * @date: 2018年9月11日
+ * @author yuyanan
+ * @date 2018年9月11日
  */
 public enum ApiErrorCode implements IErrorCode {
+
 	/**
 	 * 失败
 	 */
-	FAILED("1", "失败"),
+	FAILED("1", "系统错误"),
+
 	/**
 	 * 成功
 	 */
-	SUCCESS("0", "成功");
+	SUCCESS("0", "成功"),
+
+	;
 
 	private final String code;
 	private final String msg;

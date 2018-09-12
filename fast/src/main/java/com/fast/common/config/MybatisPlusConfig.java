@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Profile;
 /**
  * mybatis-plus configuration
  * 
- * @author: yuyanan
- * @date: 2018年7月21日
+ * @author yuyanan
+ * @date 2018年7月21日
  */
 @Configuration
 @MapperScan("com.fast.*.dao.*Dao")

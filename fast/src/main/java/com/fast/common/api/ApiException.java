@@ -3,8 +3,8 @@
  * @Title:  ApiException.java   
  * @Package com.fast.common.api   
  * @Description:   
- * @author: yuyanan  
- * @date:   2018年9月11日   
+ * @author yuyanan
+ * @date   2018年9月11日
  * @version V1.0 
  * @Copyright:  yuyanan
  * 
@@ -14,8 +14,8 @@ package com.fast.common.api;
 /**
  * api 异常类
  * 
- * @author: yuyanan
- * @date: 2018年9月11日
+ * @author yuyanan
+ * @date 2018年9月11日
  */
 public class ApiException extends RuntimeException {
 	/**
@@ -25,6 +25,11 @@ public class ApiException extends RuntimeException {
 
 	public ApiException(IErrorCode errorCode) {
 		super(errorCode.getMsg());
+		this.errorCode = errorCode;
+	}
+
+	public ApiException(IErrorCode errorCode, String warnMessage) {
+		super(warnMessage);
 		this.errorCode = errorCode;
 	}
 

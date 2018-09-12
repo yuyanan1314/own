@@ -6,8 +6,8 @@ import com.fast.common.supers.SuperService;
 /**
  * 用户表-服务类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 public interface SysUserService extends SuperService<SysUser> {
 	

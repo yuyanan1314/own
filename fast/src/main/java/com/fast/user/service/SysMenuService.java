@@ -13,8 +13,8 @@ import com.fast.common.util.Tree;
 /**
  * 菜单管理-服务类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 public interface SysMenuService extends SuperService<SysMenu> {
 	

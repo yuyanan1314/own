@@ -3,8 +3,8 @@ package com.fast.common.util;
 /**
  * 常量类
  *  
- * @author: yuyanan
- * @date:   2018年7月21日
+ * @author yuyanan
+ * @date   2018年7月21日
  */
 public class Constant {
 	

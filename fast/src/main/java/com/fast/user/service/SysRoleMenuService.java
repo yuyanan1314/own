@@ -6,8 +6,8 @@ import com.fast.user.entity.SysRoleMenu;
 /**
  * 角色权限-服务类
  * 
- * @author: yuyanan
- * @date: 2018年7月21日
+ * @author yuyanan
+ * @date 2018年7月21日
  */
 public interface SysRoleMenuService extends SuperService<SysRoleMenu> {
 
