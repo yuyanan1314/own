@@ -11,23 +11,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * admin登录
+ * home
  *
  * @author yuyanan
  * @date 2018年9月11日
  */
 @RestController
-public class LoginController extends SuperController {
+public class HomeController extends SuperController {
 
     @Autowired
     private SysUserService userService;
-    
-    @Log("登录")
-    @PostMapping("/o/login")
+
+    @Log("获取登录信息")
+    @PostMapping("/admin/get-own")
     ApiResult login(String username, String password) {
-        SysUser user = userService.login(username, password);
-        setSessionUser(user);
-        return ApiResult.ok(null);
+        SysUser user = getSessionUser();
+        return ApiResult.ok(user);
     }
 
 }

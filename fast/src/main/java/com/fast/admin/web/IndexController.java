@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,28 +23,17 @@ import com.fast.user.service.SysUserService;
 public class IndexController extends SuperController {
 
 
-	@GetMapping({ "/", "" })
+	@RequestMapping({ "/", "" })
 	String welcome(Model model) {
-		return "redirect:/login";
+		return "index";
 	}
 
-	@GetMapping("/login")
+	@RequestMapping("/login")
 	ModelAndView login() {
 		return new ModelAndView("login");
 	}
 
-	@GetMapping("/logout")
-	String logout() {
-		// ShiroTool.logout();
-		return "redirect:/login";
-	}
-
-	@GetMapping("/index")
-	String main() {
-		return "index";
-	}
-
-	@GetMapping("/403")
+	@RequestMapping("/403")
 	String error403() {
 		return "403";
 	}

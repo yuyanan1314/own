@@ -16,7 +16,7 @@ public class SuperController {
     @Autowired
     protected HttpServletRequest request;
 
-    private static final String SESSION_USER = "sysUser";
+    public static final String SESSION_USER = "sysUser";
 
     protected void setSessionUser(SysUser user) {
         request.getSession().setAttribute(SESSION_USER, user);

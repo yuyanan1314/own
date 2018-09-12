@@ -21,14 +21,19 @@ package com.fast.common.api;
 public enum ApiErrorCode implements IErrorCode {
 
 	/**
-	 * 失败
-	 */
-	FAILED("1", "系统错误"),
-
-	/**
 	 * 成功
 	 */
 	SUCCESS("0", "成功"),
+	
+	/**
+	 * 失败
+	 */
+	FAILED("1", "失败"),
+
+	/**
+	 * 失败
+	 */
+	LOGIN_INVALID("101", "登录超时"),
 
 	;
 

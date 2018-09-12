@@ -19,11 +19,6 @@ spring:
 #spring configuration
 spring:
 
-  # mvc configuration
- # mvc:
-  #  static-path-pattern=/static/** 
-  #  static-locations=classpath:/static/
-
   # Profile configuration
   profiles:
     active: dev
