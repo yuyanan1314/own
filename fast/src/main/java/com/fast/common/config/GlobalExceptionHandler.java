@@ -36,7 +36,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     public ApiResult handleBadRequest(Exception e) {
-    	e.printStackTrace();
         /*
          * 业务逻辑异常
          */

@@ -1,0 +1,57 @@
+<!-- 模板 -->
+
+<div class="layui-fluid">
+  <div class="layui-row">
+    <div class="layui-col-xs12">
+      <div class="layui-card">
+        <div class="layui-card-header">表单</div>
+        <div class="layui-card-body">
+          <form class="layui-form" action="">
+            <div class="layui-form-item">
+              <label class="layui-form-label">输入框</label>
+              <div class="layui-input-block">
+                <input type="text" id="ownUsername" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">密码框</label>
+              <div class="layui-input-inline">
+                <input type="text" id="ownRealname" name="realname" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux">辅助文字</div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">单选框</label>
+              <div class="layui-input-block">
+                <input type="radio" name="sex" value="1" title="男">
+                <input type="radio" name="sex" value="2" title="女" >
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 脚本 -->
+<script>
+  layui.use(['form' ,'jquery'], function() {
+    var form = layui.form,
+        $ = layui.jquery;
+
+    form.render();
+    //设置个人信息
+    var ownData=JSON.parse(sessionStorage.getItem('own'))
+    if(ownData){
+      $("#ownUsername").val(ownData.username);
+      $("#ownRealname").val(ownData.realname);
+      $("input[name=sex][value="+ownData.sex.value+"]").attr("checked", true );
+    }
+    form.render();
+
+  });
+</script>
+<!-- 样式 -->
+<style scoped>
+
+</style>

@@ -17,7 +17,6 @@ package com.fast;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * 程序入口类
@@ -27,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @MapperScan("com.fast.*.dao")
 @SpringBootApplication
-public class Application{
+public class Application {
 
     /**
      * @EnableAutoConfiguration //这个注解可以根据你依赖的包自动生成相关配置
@@ -38,5 +37,5 @@ public class Application{
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(Application.class, args);
     }
-    
+
 }

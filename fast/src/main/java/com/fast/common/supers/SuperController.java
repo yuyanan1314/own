@@ -1,8 +1,10 @@
 package com.fast.common.supers;
 
 
+import com.fast.admin.model.SessionSysUser;
 import com.fast.user.entity.SysUser;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -19,11 +21,13 @@ public class SuperController {
     public static final String SESSION_USER = "sysUser";
 
     protected void setSessionUser(SysUser user) {
-        request.getSession().setAttribute(SESSION_USER, user);
+        SessionSysUser sessionSysUser = new SessionSysUser();
+        BeanUtils.copyProperties(user,sessionSysUser);
+        request.getSession().setAttribute(SESSION_USER, sessionSysUser);
     }
 
-    protected SysUser getSessionUser() {
-        return (SysUser) request.getSession().getAttribute(SESSION_USER);
+    protected SessionSysUser getSessionUser() {
+        return (SessionSysUser) request.getSession().getAttribute(SESSION_USER);
     }
 
 }

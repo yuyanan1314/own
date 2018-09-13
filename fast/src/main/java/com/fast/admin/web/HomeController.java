@@ -1,6 +1,7 @@
 package com.fast.admin.web;
 
 
+import com.fast.admin.model.SessionSysUser;
 import com.fast.common.annotation.Log;
 import com.fast.common.api.ApiResult;
 import com.fast.common.supers.SuperController;
@@ -25,7 +26,7 @@ public class HomeController extends SuperController {
     @Log("获取登录信息")
     @PostMapping("/admin/get-own")
     ApiResult login(String username, String password) {
-        SysUser user = getSessionUser();
+        SessionSysUser user = getSessionUser();
         return ApiResult.ok(user);
     }
 

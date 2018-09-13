@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.SqlCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fast.common.supers.SuperEntity;
+import com.fast.user.entity.enums.SexEnum;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class SysUser extends SuperEntity {
     /**
      * 性别 1男 2女
      */
-    private Integer sex;
+    private SexEnum sex;
     /**
      * 部门id
      */

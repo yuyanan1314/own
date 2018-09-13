@@ -1,18 +1,19 @@
-/**  
+/**
  * All rights Reserved, Designed By www.tydic.com
- * @Title:  WebSecurityConfig.java   
- * @Package com.fast.admin.web.config   
- * @Description:   
- * @author: yuyanan  
- * @date:   2018年9月13日   
- * @version V1.0 
+ * @Title:  WebSecurityConfig.java
+ * @Package com.fast.admin.web.config
+ * @Description:
+ * @author: yuyanan
+ * @date:   2018年9月13日
+ * @version V1.0
  * @Copyright:  yuyanan
- * 
+ *
  */
 package com.fast.admin.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 /**
  * 权限拦截器
- * 
+ *
  * @author: yuyanan
  * @date: 2018年9月13日
  */
@@ -29,7 +30,7 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 
 	/**
 	 * 自定义权限拦截器bean
-	 * 
+	 *
 	 * @return
 	 */
 	@Bean
@@ -38,9 +39,16 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 	}
 
 	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**");
+	}
+
+	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/s/**").addResourceLocations(
+		registry.addResourceHandler("/**").addResourceLocations(
 				"classpath:/static/");
+		registry.addResourceHandler("/m").addResourceLocations(
+			"classpath:/static/own.html");
 		super.addResourceHandlers(registry);
 	}
 
@@ -53,12 +61,12 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 				.addInterceptor(getSecurityInterceptor());
 
 		// 排除配置
+		addInterceptor.excludePathPatterns("/o/login");
 		addInterceptor.excludePathPatterns("/login");
 		addInterceptor.excludePathPatterns("/favicon.ico");
 		addInterceptor.excludePathPatterns("/error");
-		addInterceptor.excludePathPatterns("classpath:/s/**");
 		// 拦截配置
-		addInterceptor.addPathPatterns("/admin*");
+		addInterceptor.addPathPatterns("/admin/**");
 	}
 
 }

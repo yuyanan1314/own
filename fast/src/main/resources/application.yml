@@ -1,6 +1,8 @@
 # app
 server:
     port: 9099
+    session:
+    timeout: 2000
     
 # log4j
 logging:
@@ -25,7 +27,7 @@ spring:
     
   # ThymeleafProperties
   thymeleaf:
-    mode: LEGACYHTML5
+    mode: HTML
     cache: false
   jackson:
     time-zone: GMT+8
@@ -65,7 +67,7 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Dao.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.fast.*.entity
-  typeEnumsPackage: com.fast.entity.enums
+  typeEnumsPackage: com.fast.*.entity.enums
   global-config:
     # 数据库相关配置
     db-config:
