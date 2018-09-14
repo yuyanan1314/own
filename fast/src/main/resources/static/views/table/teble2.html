@@ -53,7 +53,7 @@
 
     //第一个实例
     table.render({
-      method: 'post',
+      method: 'get',
       limit: 20,
       elem: '#demo_hash',
       done: function () {
@@ -64,6 +64,12 @@
       page: true, //开启分页
       cols: [
         [ //表头
+          {
+        		type: 'checkbox',
+              width: 80,
+              sort: true,
+              fixed: 'left'
+            },
           {
             field: 'id',
             title: 'ID',

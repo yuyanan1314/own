@@ -33,6 +33,7 @@ public class SysUserController {
     @GetMapping("/list")
     ApiResult page(SysUserPageBo pageBo) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        //条件
         if(pageBo != null) {
             if(StringUtils.isNotBlank(pageBo.getUsername())){
                 queryWrapper.like("username", pageBo.getUsername());
@@ -44,7 +45,14 @@ public class SysUserController {
                 queryWrapper.like("mobile", pageBo.getMobile());
             }
         }
-        IPage  page = sysUserService.page(new Page<>(pageBo.getPage(), pageBo.getLimit()), queryWrapper);
+        //排序
+        if(StringUtils.isNotBlank(pageBo.getField())){
+        	queryWrapper.orderBy(true, pageBo.isAsc(), pageBo.getField());
+        }else{
+        	queryWrapper.orderBy(true, false, "createTime");
+        }
+        
+        IPage<SysUser>  page = sysUserService.page(new Page<SysUser>(pageBo.getPage(), pageBo.getLimit()), queryWrapper);
         return ApiResult.ok(page);
     }
 }

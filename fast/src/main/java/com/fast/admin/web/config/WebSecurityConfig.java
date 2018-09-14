@@ -13,6 +13,7 @@ package com.fast.admin.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -38,17 +39,32 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 		return new SecurityInterceptor();
 	}
 
+	/**
+	 * 跨域
+	 */
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**");
 	}
 
+	/**
+	 * 权限过滤
+	 */
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations(
 				"classpath:/static/");
 		super.addResourceHandlers(registry);
 	}
+	
+	/**
+	 * 注册枚举转换器
+	 */
+	@Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new StringToBaseEnumConverterFactory());
+    }
+
 
 	/**
 	 * 加入自定义拦截器
