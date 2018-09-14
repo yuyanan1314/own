@@ -26,7 +26,7 @@ public class ApiResult {
 	/**
 	 * 业务错误码
 	 */
-	private String code;
+	private long code;
 	/**
 	 * 结果集
 	 */
@@ -62,7 +62,7 @@ public class ApiResult {
 		return restResult(data, errorCode.getCode(), errorCode.getMsg());
 	}
 
-	private static ApiResult restResult(Object data, String code, String msg) {
+	private static ApiResult restResult(Object data, long code, String msg) {
 		ApiResult apiResult = new ApiResult();
 		apiResult.setCode(code);
 		apiResult.setData(data);
@@ -71,7 +71,7 @@ public class ApiResult {
 	}
 
 	public boolean ok() {
-		return ApiErrorCode.SUCCESS.getCode().equals(this.code);
+		return ApiErrorCode.SUCCESS.getCode() == this.code;
 	}
 
 	/**

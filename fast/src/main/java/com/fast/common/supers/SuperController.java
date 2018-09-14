@@ -1,7 +1,7 @@
 package com.fast.common.supers;
 
 
-import com.fast.admin.model.SessionSysUser;
+import com.fast.admin.model.basic.SessionSysUser;
 import com.fast.user.entity.SysUser;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;

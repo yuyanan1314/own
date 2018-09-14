@@ -47,8 +47,6 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations(
 				"classpath:/static/");
-		registry.addResourceHandler("/m").addResourceLocations(
-			"classpath:/static/own.html");
 		super.addResourceHandlers(registry);
 	}
 

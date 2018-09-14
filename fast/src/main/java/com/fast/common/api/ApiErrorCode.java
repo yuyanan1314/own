@@ -23,32 +23,32 @@ public enum ApiErrorCode implements IErrorCode {
 	/**
 	 * 成功
 	 */
-	SUCCESS("0", "成功"),
+	SUCCESS(0, "成功"),
 	
 	/**
 	 * 失败
 	 */
-	FAILED("1", "失败"),
+	FAILED(1, "失败"),
 
 	/**
 	 * 失败
 	 */
-	LOGIN_INVALID("101", "登录超时"),
+	LOGIN_INVALID(101, "登录超时"),
 
 	;
 
-	private final String code;
+	private final long code;
 	private final String msg;
 
-	ApiErrorCode(final String code, final String msg) {
+	ApiErrorCode(final long code, final String msg) {
 		this.code = code;
 		this.msg = msg;
 	}
 
-	public static ApiErrorCode fromCode(String code) {
+	public static ApiErrorCode fromCode(long code) {
 		ApiErrorCode[] ecs = ApiErrorCode.values();
 		for (ApiErrorCode ec : ecs) {
-			if (ec.getCode() .equals(code) ) {
+			if (ec.getCode() == code ) {
 				return ec;
 			}
 		}
@@ -56,7 +56,7 @@ public enum ApiErrorCode implements IErrorCode {
 	}
 
 	@Override
-	public String getCode() {
+	public long getCode() {
 		return code;
 	}
 

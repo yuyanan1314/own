@@ -1,11 +1,10 @@
 package com.fast.admin.web;
 
 
-import com.fast.admin.model.SessionSysUser;
+import com.fast.admin.model.basic.SessionSysUser;
 import com.fast.common.annotation.Log;
 import com.fast.common.api.ApiResult;
 import com.fast.common.supers.SuperController;
-import com.fast.user.entity.SysUser;
 import com.fast.user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

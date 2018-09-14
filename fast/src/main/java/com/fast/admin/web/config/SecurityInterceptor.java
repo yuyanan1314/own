@@ -11,7 +11,7 @@
  */
 package com.fast.admin.web.config;
 
-import com.fast.admin.model.SessionSysUser;
+import com.fast.admin.model.basic.SessionSysUser;
 import com.fast.common.api.ApiErrorCode;
 import com.fast.common.api.ApiResult;
 import com.fast.common.supers.SuperController;

@@ -3,7 +3,6 @@ if (layui === undefined) {
 } else {
 
   var modules = {
-    login: 'fast_modules/login',
     app: 'fast_modules/app',
     admin: 'fast_modules/admin',
     axios: 'fast_modules/axios',

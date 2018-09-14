@@ -1,3 +1,6 @@
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>页面展示设置</legend>
+</fieldset>
 <div class="layui-fluid">
   <div class="layui-row">
     <div class="layui-col-xs12">
@@ -11,8 +14,9 @@
   </div>
 </div>
 <br/>
-<h4>主题</h4>
-<br/>
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>主题</legend>
+</fieldset>
 <div class="layui-row">
   <div class="layui-col-xs12" style="margin-bottom:15px;">
     <div class="layui-row layui-col-space5">
@@ -127,12 +131,32 @@
     </div>
   </div>
 </div>
+
+<br/>
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>其他</legend>
+</fieldset>
+<div class="layui-fluid">
+  <div class="layui-row">
+    <div class="layui-col-xs12">
+        <div style="width: 150px; margin: 0;">
+          <button id="theme-default" class="layui-btn layui-btn-fluid">恢复默认设置</button>
+        </div>
+    </div>
+  </div>
+</div>
 <script>
   layui.use(['form', 'utils'], function () {
     var form = layui.form,
         $ = layui.jquery,
         utils = layui.utils,
         localStorage = utils.localStorage;
+
+    //恢复默认设置
+    $('#theme-default').click(function(){
+      localStorage.clear();
+      location.reload();
+    });
 
     form.render();
     var key = 'KITADMIN_SETTING_LOADTYPE';
@@ -155,7 +179,6 @@
     });
     var themeKey = 'KITADMIN_SETTING_THEME';
     $('input[name="setting-theme"]').on('click', function () {
-      debugger;
       var _that = $(this);
       var themeName = _that.parent('label').attr('data-theme');
       localStorage.setItem(themeKey, {
