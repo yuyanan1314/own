@@ -3,9 +3,8 @@
   <div class="layui-row">
     <div class="layui-col-xs12">
       <div class="layui-card">
-      	<!-- 头部 -->
-        <div class="layui-card-header">
-         <!-- 条件检索 -->
+
+          <!-- 条件检索 -->
           <blockquote class="layui-elem-quote quoteBox" style="margin-bottom: -5px;">
             <form class="layui-form" id="userSearchForm">
               <div class="layui-inline">
@@ -29,13 +28,10 @@
               <a class="layui-btn" data-type="reload">搜索</a>
             </form>
           </blockquote>
-        </div>
-        
-        <!-- 主体 -->
-        <div class="layui-card-body">
+
+        <!-- 表格主体 -->
           <table id="userTable" lay-filter="userTableFilter"></table>
-        </div>
-        
+
       </div>
     </div>
   </div>
@@ -67,7 +63,7 @@
         }
       });
     };
-    
+
     //条件检索
     $('#userSearchForm .layui-btn').on('click', function () {
       tableReload();
@@ -78,121 +74,110 @@
      * @param result
      */
     table.render({
-        elem: '#'+tableId
-        , title: '用户列表'
-        , toolbar: tableToolbarId
-        ,done: function () {
-          $('#'+tableId).next().css('height','auto');
+      elem: '#' + tableId
+      , title: '用户列表'
+      , toolbar: tableToolbarId
+      , done: function () {
+        $('#' + tableId).next().css('height', 'auto');
+      }
+      , url: tableDataUrl
+      , done: function () {
+        $('#' + tableId).next().css('height', 'auto');
+      }
+      , initSort: {
+        field: 'createTime' //排序字段，对应 cols 设定的各字段名
+        , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+      }
+      , parseData: function (res) {
+        app.result.handler(res);
+        return {
+          "code": res.code, //解析接口状态
+          "count": res.data.total, //解析数据长度
+          "data": res.data.records //解析数据列表
+        };
+      }
+      , page: true //开启分页
+      , limit: 20
+      , cols: [[ //标题栏
+        {
+          type: 'checkbox',
+          width: 80,
+          sort: true,
+          fixed: 'left'
         }
-	    , url:tableDataUrl
-	    ,done: function () {
-	        $('#'+tableId).next().css('height','auto');
-	      }
-	    , initSort: {
-	  	    field: 'createTime' //排序字段，对应 cols 设定的各字段名
-	  	   ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
-	  	      }
-	    , parseData: function (res) {
-	      app.result.handler(res);
-	      return {
-	        "code": res.code, //解析接口状态
-	        "count": res.data.total, //解析数据长度
-	        "data": res.data.records //解析数据列表
-	      };
-	    }
-      	, page: true //开启分页
-      	, limit: 20
-      	,cols: [[ //标题栏
-                {type: 'checkbox',
-                    width: 80,
-                    sort: true,
-                    fixed: 'left'}
-               ,{field: 'username', title: '用户名' }
-               , {field: 'realname', title: '姓名' }
-               , {field: 'sex', title: '性别'}
-               , {field: 'mobile', title: '手机号', align: 'center' }
-               , {field: 'email', title: '邮箱'}
-               , {field: 'createTime', title: '注册时间', sort: true,  templet: function(row){
-                   return util.toDateString(row.createTime);
-                 }}
-               ,{fixed: 'right',title: '操作', width: 165, align:'center', toolbar: '#toolbarSysUserRow'}
-         ]]
-       
-    });
-    
-  //排序监听
-    table.on('sort('+tableFilter+')', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-    	  //尽管我们的 table 自带排序功能，但并没有请求服务端。
-    	  //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
-    	  table.reload(tableId, {
-    	    initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
-    	    ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-    	      field: obj.field //排序字段
-    	      ,order: obj.type //排序方式
-    	    }
-    	  });
+        , {field: 'username', title: '用户名'}
+        , {field: 'realname', title: '姓名'}
+        , {field: 'sex', title: '性别'}
+        , {field: 'mobile', title: '手机号', align: 'center'}
+        , {field: 'email', title: '邮箱'}
+        , {
+          field: 'createTime', title: '注册时间', sort: true, templet: function (row) {
+            return util.toDateString(row.createTime);
+          }
+        }
+        , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: '#toolbarSysUserRow'}
+      ]]
+
     });
 
-  //头工具栏事件
-    table.on('toolbar('+tableFilter+')', function(obj){
-    	debugger;
+    //排序监听
+    table.on('sort(' + tableFilter + ')', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+      //尽管我们的 table 自带排序功能，但并没有请求服务端。
+      //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+      table.reload(tableId, {
+        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+        , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+          field: obj.field //排序字段
+          , order: obj.type //排序方式
+        }
+      });
+    });
+
+    //头工具栏事件
+    table.on('toolbar(' + tableFilter + ')', function (obj) {
+      console.log(obj);
       var checkStatus = table.checkStatus(obj.config.id);
-      switch(obj.event){
-        case 'addEvent':
+      switch (obj.event) {
+        case 'sysUserAddEvent':
+          location.href = "#/user/create";
+          break;
+        case 'sysUserDeleteListEnent':
+          debugger;
+          var ids = new Array();
           var data = checkStatus.data;
-          layer.alert(JSON.stringify(data));
-        break;
-        case 'getCheckLength':
-          var data = checkStatus.data;
-          layer.msg('选中了：'+ data.length + ' 个');
-        break;
-        case 'isAll':
-          layer.msg(checkStatus.isAll ? '全选': '未全选');
-        break;
-      };
+          $.each(data, function(index,instance){
+
+            ids.push(instance.id);
+          });
+          //监听提交
+            app.post("/admin/sysUser/del", {ids: ids}, function(result) {
+              layer.msg(result.msg);
+            });
+          layer.msg('选中了：' + data.length + ' 个');
+          break;
+      }
+      ;
     });
 
     //监听行工具事件
-    table.on('toolbar('+tableFilter+')', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-    	 debugger;
+    table.on('tool(' + tableFilter + ')', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      console.log(obj);
       var data = obj.data //获得当前行数据
-          ,layEvent = obj.event; //获得 lay-event 对应的值
-      if(layEvent === 'detail'){
-        layer.msg('查看操作');
-      } else if(layEvent === 'del'){
-        layer.confirm('真的删除行么', function(index){
-          obj.del(); //删除对应行（tr）的DOM结构
-          layer.close(index);
-          //向服务端发送删除指令
-        });
-      } else if(layEvent === 'edit'){
-        layer.msg('编辑操作');
-      }
-          
-      var checkStatus = table.checkStatus(obj.config.id);
-      switch(layEvent){
-     	 case 'del':
-    		layer.confirm('真的删除行么', function(index){
-              obj.del(); //删除对应行（tr）的DOM结构
-              layer.close(index);
+          , layEvent = obj.event; //获得 lay-event 对应的值
+
+      switch (layEvent) {
+        case 'sysUserDel':
+          layer.confirm('真的删除行么', function (index) {
+            obj.del(); //删除对应行（tr）的DOM结构
+            layer.close(index);
             //向服务端发送删除指令
-            });
-              break;
-    	case 'edit':
-    		 layer.msg('编辑操作');
-    		break;
-        case 'addEvent':
-          var data = checkStatus.data;
-          layer.alert(JSON.stringify(data));
-        break;
-        case 'getCheckLength':
-          var data = checkStatus.data;
-          layer.msg('选中了：'+ data.length + ' 个');
-        break;
-        case 'isAll':
-          layer.msg(checkStatus.isAll ? '全选': '未全选');
-        break;
-      };
+          });
+          break;
+        case 'sysUserEdis':
+          layer.msg('编辑操作');
+          break;
+      }
+      ;
     });
 
   });
@@ -201,18 +186,18 @@
 <!-- 工具栏 -->
 <script type="text/html" id="toolbarSysUser">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="addEvent"><i
+    <button class="layui-btn layui-btn-sm" lay-event="sysUserAddEvent"><i
         class="layui-icon">&#xe654;</i>新增
     </button>
-    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    <button class="layui-btn layui-btn-sm" lay-event="sysUserDeleteListEnent"><i
+        class="layui-icon">&#xe654;</i>批量删除</button>
   </div>
 </script>
 
 <!-- 表格列工具 -->
 <script type="text/html" id="toolbarSysUserRow">
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  <a class="layui-btn layui-btn-xs" lay-event="sysUserEdis">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sysUserDel">删除</a>
 </script>
 
 <!-- 样式 -->

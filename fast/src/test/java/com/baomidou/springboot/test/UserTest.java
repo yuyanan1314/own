@@ -38,14 +38,18 @@ public class UserTest {
        
        
         
-   	int count =   userService.count(new QueryWrapper<SysUser>().like("username", "admin") );
-    	System.out.println(count);
-    	IPage<SysUser> page = new Page<SysUser>(1,2);
-    	page.setCurrent(1);
-    	page.setSize(1);
-    IPage<SysUser> p = 	userService.page(page,new QueryWrapper<SysUser>().like("username", "admin"));
-    System.out.println(p.getRecords().size());
-    
+//   	int count =   userService.count(new QueryWrapper<SysUser>().like("username", "admin") );
+//    	System.out.println(count);
+//    	IPage<SysUser> page = new Page<SysUser>(1,2);
+//    	page.setCurrent(1);
+//    	page.setSize(1);
+//    IPage<SysUser> p = 	userService.page(page,new QueryWrapper<SysUser>().like("username", "admin"));
+//    System.out.println(p.getRecords().size());
+
+        SysUser  u = new SysUser();
+        u.setUsername("ooo");
+        userService.save(u);
+
     }
 
     

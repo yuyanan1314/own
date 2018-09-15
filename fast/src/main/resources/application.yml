@@ -12,7 +12,7 @@ logging:
 # Spring profiles configuration
 ---
 spring:
-    profiles: local
+    profiles: dev
 ---
 spring:
     profiles: prod

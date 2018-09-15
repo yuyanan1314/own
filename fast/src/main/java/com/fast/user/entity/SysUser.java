@@ -8,6 +8,7 @@ import com.fast.user.entity.enums.SexEnum;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -31,18 +32,20 @@ public class SysUser extends SuperEntity {
     /**
      * 用户名
      */
+    @NotBlank
 	@TableField(condition = SqlCondition.EQUAL)
     private String username;
     /**
      * 密码
      */
+    @NotBlank
     private String password;
     /**
      * 真实姓名
      */
     private String realname;
     /**
-     * 性别 1男 2女
+     * 性别
      */
     private SexEnum sex;
     /**
