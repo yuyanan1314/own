@@ -1,7 +1,7 @@
 /**
  * All rights Reserved, Designed By www.tydic.com
  * @Title:  WebSecurityConfig.java
- * @Package com.fast.admin.web.config
+ * @Package com.fast.admin.config
  * @Description:
  * @author: yuyanan
  * @date:   2018年9月13日
@@ -9,11 +9,14 @@
  * @Copyright:  yuyanan
  *
  */
-package com.fast.admin.web.config;
+package com.fast.admin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -38,6 +41,18 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 	public SecurityInterceptor getSecurityInterceptor() {
 		return new SecurityInterceptor();
 	}
+	
+	 @Bean
+	    public CorsFilter corsFilter() {
+	        final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+	        final CorsConfiguration corsConfiguration = new CorsConfiguration();
+	        corsConfiguration.setAllowCredentials(true);
+	        corsConfiguration.addAllowedOrigin("*");
+	        corsConfiguration.addAllowedHeader("*");
+	        corsConfiguration.addAllowedMethod("*");
+	        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+	        return new CorsFilter(urlBasedCorsConfigurationSource);
+	    }
 
 	/**
 	 * 跨域
@@ -48,12 +63,15 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 	}
 
 	/**
-	 * 权限过滤
+	 * 资源映射
 	 */
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations(
 				"classpath:/static/");
+		//swagger2配置 否则swagger-ui.html会被拦截而导致404
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/").setCachePeriod(0);
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(0);
 		super.addResourceHandlers(registry);
 	}
 	
@@ -79,6 +97,9 @@ public class WebSecurityConfig extends WebMvcConfigurationSupport {
 		addInterceptor.excludePathPatterns("/login");
 		addInterceptor.excludePathPatterns("/favicon.ico");
 		addInterceptor.excludePathPatterns("/error");
+		addInterceptor.excludePathPatterns("swagger-ui.html");
+		addInterceptor.excludePathPatterns("/webjars/**");
+		
 		// 拦截配置
 		addInterceptor.addPathPatterns("/admin/**");
 	}

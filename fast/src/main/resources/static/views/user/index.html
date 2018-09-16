@@ -42,6 +42,7 @@
     var table = layui.table,
         app = layui.app,
         util = layui.util,
+        form = layui.form,
         $ = layui.jquery;
 
     var tableId = 'userTable';
@@ -107,7 +108,7 @@
         }
         , {field: 'username', title: '用户名'}
         , {field: 'realname', title: '姓名'}
-        , {field: 'sex', title: '性别'}
+        , {field: 'sex', title: '性别', templet: '#sexTemplate',}
         , {field: 'mobile', title: '手机号', align: 'center'}
         , {field: 'email', title: '邮箱'}
         , {
@@ -138,39 +139,46 @@
       console.log(obj);
       var checkStatus = table.checkStatus(obj.config.id);
       switch (obj.event) {
+      	//新增
         case 'sysUserAddEvent':
           location.href = "#/user/create";
           break;
+        //批量删除
         case 'sysUserDeleteListEnent':
-          debugger;
-          var ids = new Array();
-          var data = checkStatus.data;
-          $.each(data, function(index,instance){
+        	layer.confirm('确认删除吗', function (index) {
+                layer.close(index);
+                //向服务端发送删除指令
+                var ids = new Array();
+                var data = checkStatus.data;
+                $.each(data, function(index,instance){
 
-            ids.push(instance.id);
-          });
-          //监听提交
-            app.post("/admin/sysUser/del", {ids: ids}, function(result) {
-              layer.msg(result.msg);
-            });
-          layer.msg('选中了：' + data.length + ' 个');
-          break;
+                  ids.push(instance.id);
+                });
+                app.post("/admin/sysUser/dels", {ids: ids}, function(result) {
+                    layer.msg(result.msg);
+                  });
+                table.reload(tableId);
+           });
+        	break;
       }
-      ;
+      
     });
 
     //监听行工具事件
     table.on('tool(' + tableFilter + ')', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-      console.log(obj);
       var data = obj.data //获得当前行数据
           , layEvent = obj.event; //获得 lay-event 对应的值
 
       switch (layEvent) {
+      	//删除
         case 'sysUserDel':
-          layer.confirm('真的删除行么', function (index) {
+          layer.confirm('确认删除吗', function (index) {
             obj.del(); //删除对应行（tr）的DOM结构
             layer.close(index);
             //向服务端发送删除指令
+            app.post("/admin/sysUser/del", {id: data.id}, function(result) {
+                layer.msg(result.msg);
+            });
           });
           break;
         case 'sysUserEdis':
@@ -179,8 +187,25 @@
       }
       ;
     });
+    
+  //监听性别操作
+    form.on('switch(sexTemplateFilter)', function(obj){
+      var sex = 2;
+      if (!obj.othis) {
+    	  sex = 1;
+      }
+      app.post("/admin/sysUser/sex", {sex: sex}, function(result) {
+          layer.msg(result.msg);
+      });
+    });
 
   });
+</script>
+
+<!-- 性别模板 -->
+<script type="text/html" id="sexTemplate">
+  <!-- 这里的 checked 的状态只是演示 -->
+  <input type="checkbox" name="sex" value="{{d.sex.value}}" lay-skin="switch" lay-text="女|男" lay-filter="sexTemplateFilter" {{ d.sex.value == 2 ? 'checked' : '' }}>
 </script>
 
 <!-- 工具栏 -->

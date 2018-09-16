@@ -24,52 +24,57 @@ import com.fast.common.api.IErrorCode;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(GlobalExceptionHandler.class);
 
-    /**
-     * <p>
-     * 自定义 REST 业务异常
-     * <p>
-     *
-     * @param e 异常类型
-     * @return
-     */
-    @ExceptionHandler(value = Exception.class)
-    public ApiResult handleBadRequest(Exception e) {
-        /*
-         * 业务逻辑异常
-         */
-        if (e instanceof ApiException) {
-            IErrorCode errorCode = ((ApiException) e).getErrorCode();
-            if (null != errorCode) {
-                logger.debug("Rest request error, {}", errorCode.toString());
-                return ApiResult.failed(errorCode);
-            }
-            logger.debug("Rest request error, {}", e.getMessage());
-            return ApiResult.failed(e.getMessage());
-        }
+	/**
+	 * <p>
+	 * 自定义 REST 业务异常
+	 * <p>
+	 *
+	 * @param e
+	 *            异常类型
+	 * @return
+	 */
+	@ExceptionHandler(value = Exception.class)
+	public ApiResult handleBadRequest(Exception e) {
+		e.printStackTrace();
+		/*
+		 * 业务逻辑警告提示
+		 */
+		if (e instanceof ApiException) {
+			IErrorCode errorCode = ((ApiException) e).getErrorCode();
+			if (null != errorCode) {
+				logger.debug("Rest request error, {}", e.getMessage());
+				return ApiResult.fail(errorCode.getCode(), e.getMessage());
+			}
+			logger.debug("Rest request error, {}", e.getMessage());
+			return ApiResult.fail(ApiErrorCode.ERROR.getCode(), e.getMessage());
+		}
 
-        /*
-         * 参数校验异常
-         */
-        if (e instanceof BindException) {
-            BindingResult bindingResult = ((BindException) e).getBindingResult();
-            if (null != bindingResult && bindingResult.hasErrors()) {
-                List<Object> jsonList = new ArrayList<>();
-                bindingResult.getFieldErrors().stream().forEach(fieldError -> {
-                    Map<String, Object> jsonObject = new HashMap<>(2);
-                    jsonObject.put("name", fieldError.getField());
-                    jsonObject.put("msg", fieldError.getDefaultMessage());
-                    jsonList.add(jsonObject);
-                });
-                return ApiResult.restResult(jsonList, ApiErrorCode.FAILED);
-            }
-        }
+		/*
+		 * 参数校验异常
+		 */
+		if (e instanceof BindException) {
+			BindingResult bindingResult = ((BindException) e)
+					.getBindingResult();
+			if (null != bindingResult && bindingResult.hasErrors()) {
+				List<Object> jsonList = new ArrayList<>();
+				bindingResult.getFieldErrors().stream().forEach(fieldError -> {
+					Map<String, Object> jsonObject = new HashMap<>(2);
+					jsonObject.put("name", fieldError.getField());
+					jsonObject.put("msg", fieldError.getDefaultMessage());
+					jsonList.add(jsonObject);
+				});
+				return ApiResult.fail(jsonList, ApiErrorCode.ERROR.getCode(),
+						ApiErrorCode.ERROR.getMsg());
+			}
+		}
 
-        /**
-         * 系统内部异常，打印异常栈
-         */
-        logger.error("Error: handleBadRequest StackTrace : {}", e);
-        return ApiResult.failed(ApiErrorCode.FAILED);
-    }
+		/**
+		 * 系统内部异常，打印异常栈
+		 */
+		logger.error("Error: handleBadRequest StackTrace", e);
+		return ApiResult.fail(ApiErrorCode.ERROR.getCode(), e.getMessage());
+	}
 }

@@ -8,6 +8,8 @@ import com.fast.common.supers.SuperServiceImpl;
 import com.fast.user.dao.SysUserDao;
 import com.fast.user.entity.SysUser;
 import com.fast.user.service.SysUserService;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,26 +19,36 @@ import org.springframework.stereotype.Service;
  * @date 2018年7月21日
  */
 @Service
-public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> implements SysUserService {
+public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser>
+		implements SysUserService {
 
-    /**
-     * 登陆
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return SysUser
-     */
-    @Override
-    public SysUser login(String username, String password) {
-        Wrapper<SysUser> wrapper = new QueryWrapper<SysUser>().eq("username", username);
-        SysUser sysUser = this.baseMapper.selectOne(wrapper);
-		if(sysUser == null){
-		    throw new ApiException("帐号不存在");
-        }
-        if(!password.trim().equals(sysUser.getPassword().trim())){
-            throw new ApiException("密码不正确");
-        }
-        return sysUser;
-    }
+	/**
+	 * 登陆
+	 *
+	 * @param username
+	 *            用户名
+	 * @param password
+	 *            密码
+	 * @return SysUser
+	 */
+	@Override
+	public SysUser login(String username, String password) {
+		
+		if (StringUtils.isAllBlank(username))
+			throw ApiException.ApiExceptionBuilder.warn("用户名不能为空");
+		if (StringUtils.isAllBlank(password))
+			throw ApiException.ApiExceptionBuilder.warn("用户名不能为空");
+		
+		Wrapper<SysUser> wrapper = new QueryWrapper<SysUser>().eq("username",
+				username);
+		SysUser sysUser = this.baseMapper.selectOne(wrapper);
+		if (sysUser == null) {
+			throw ApiException.ApiExceptionBuilder.warn("帐号不存在");
+		}
+		if (!password.trim().equals(sysUser.getPassword().trim())) {
+			throw ApiException.ApiExceptionBuilder.warn("密码不正确");
+		}
+		return sysUser;
+	}
 
 }

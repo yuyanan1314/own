@@ -26,14 +26,24 @@ public enum ApiErrorCode implements IErrorCode {
 	SUCCESS(0, "成功"),
 	
 	/**
-	 * 失败
+	 * 失败，警告提示类信息
 	 */
-	FAILED(1, "失败"),
+	WARN(1, "警告提示信息"),
+	
+	/**
+	 * 错误，逻辑错误类信息
+	 */
+	ERROR(2, "系统错误，请联系管理员"),
 
 	/**
 	 * 失败
 	 */
 	LOGIN_INVALID(101, "登录超时"),
+	
+	/**
+	 * 失败
+	 */
+	TEST(222, "TEST"),
 
 	;
 

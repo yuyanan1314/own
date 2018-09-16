@@ -5,10 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fast.common.supers.SuperEntity;
 import com.fast.user.entity.enums.SexEnum;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 
 /**
@@ -21,6 +26,7 @@ import lombok.Data;
  */
 @TableName("sys_user")
 @Data
+@ApiModel("返回响应信息")
 public class SysUser extends SuperEntity {
 	
 	@TableField(exist = false)
@@ -32,6 +38,7 @@ public class SysUser extends SuperEntity {
     /**
      * 用户名
      */
+	@ApiModelProperty("用户名")
     @NotBlank
 	@TableField(condition = SqlCondition.EQUAL)
     private String username;

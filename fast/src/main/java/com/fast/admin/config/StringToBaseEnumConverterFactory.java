@@ -1,7 +1,7 @@
 /**  
  * All rights Reserved, Designed By www.tydic.com
  * @Title:  StringToBaseEnumConverterFactory.java   
- * @Package com.fast.admin.web.config   
+ * @Package com.fast.admin.config   
  * @Description:   
  * @author: yuyanan  
  * @date:   2018年9月15日   
@@ -9,7 +9,7 @@
  * @Copyright:  yuyanan
  * 
  */
-package com.fast.admin.web.config;
+package com.fast.admin.config;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;

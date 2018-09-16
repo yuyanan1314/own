@@ -16,12 +16,12 @@ public class SuperPageBo {
     /**
      * 页号
      */
-    private Integer page;
+    private Integer page = 1;
 
     /**
      * 每页数量
      */
-    private Integer limit;
+    private Integer limit = 10;
     
     /**
      * 排序属性

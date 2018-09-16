@@ -40,13 +40,23 @@ layui.define([ 'jquery', 'layer' ], function(exports) {
        * @param result
        */
 			fail : function(result) {
-        if (result.code == 101) {
-          var storage = window.sessionStorage;
-          storage.clear();
-          location.href = '/login'
-        }else{
-          layer.msg("错误[" + result.code + "]:" + result.msg);
-        }
+		switch (result.code) {
+		case 101:
+			var storage = window.sessionStorage;
+	        storage.clear();
+	        location.href = '/login'
+			break;
+		case 1:
+			layer.msg("提示:" + result.msg);
+			break;
+		case 2:
+			layer.msg("错误码[" + result.code + "]:" + result.msg);
+			break;
+
+		default:
+			layer.msg("系统错误[" + result.code + "]:" + result.msg);
+			break;
+		}
       }
 		}
 	};

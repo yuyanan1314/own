@@ -22,30 +22,49 @@ public class ApiException extends RuntimeException {
 	 * 错误码
 	 */
 	private IErrorCode errorCode;
-
-	public ApiException(IErrorCode errorCode) {
+	
+	private ApiException(IErrorCode errorCode) {
 		super(errorCode.getMsg());
 		this.errorCode = errorCode;
 	}
-
-	public ApiException(IErrorCode errorCode, String warnMessage) {
+	
+	private ApiException(IErrorCode errorCode, String warnMessage) {
 		super(warnMessage);
 		this.errorCode = errorCode;
 	}
-
-	public ApiException(String message) {
+	
+	private ApiException(String message) {
 		super(message);
 	}
 
-	public ApiException(Throwable cause) {
+	private ApiException(Throwable cause) {
 		super(cause);
 	}
 
-	public ApiException(String message, Throwable cause) {
+	private ApiException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	public IErrorCode getErrorCode() {
 		return errorCode;
+	}
+	
+	
+	
+	public static class ApiExceptionBuilder{
+		
+		public static ApiException warn(String message){
+			return new ApiException(ApiErrorCode.WARN, message);
+		}
+		
+		public static ApiException other(IErrorCode errorCode){
+			return new ApiException(errorCode);
+		}
+		
+		public static ApiException error(String message){
+			return new ApiException(message);
+		}
+		
+		
 	}
 }
