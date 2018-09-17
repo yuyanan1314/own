@@ -16,6 +16,7 @@ import com.fast.common.api.ApiErrorCode;
 import com.fast.common.api.ApiException;
 import com.fast.common.api.ApiResult;
 import com.fast.common.api.IErrorCode;
+import com.fast.common.util.JsonTool;
 
 /**
  * <p>
@@ -67,7 +68,7 @@ public class GlobalExceptionHandler {
 					jsonList.add(jsonObject);
 				});
 				return ApiResult.fail(jsonList, ApiErrorCode.ERROR.getCode(),
-						ApiErrorCode.ERROR.getMsg());
+						JsonTool.beanToJson(jsonList));
 			}
 		}
 

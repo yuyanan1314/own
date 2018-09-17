@@ -1,7 +1,8 @@
 package com.fast.admin.model.bo;
 
-import com.fast.admin.model.basic.SuperPageBo;
 import lombok.Data;
+
+import com.fast.admin.model.basic.SuperPageBo;
 
 /**
  * 分页查询参数类

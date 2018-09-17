@@ -1,0 +1,209 @@
+<!-- 模板 -->
+<div class="layui-fluid">
+  <div class="layui-row">
+    <div class="layui-col-xs12">
+      <div class="layui-card">
+
+        <!-- 条件检索 -->
+        <blockquote class="layui-elem-quote quoteBox" style="margin-bottom: -5px;">
+          <form class="layui-form" id="roleSearchForm">
+            <div class="layui-inline">
+              <label class="layui-form-label">角色名</label>
+              <div class="layui-input-inline">
+                <input type="text" name="roleName" class="layui-input" placeholder="请输入查询条件"/>
+              </div>
+            </div>
+            <a class="layui-btn" data-type="reload">搜索</a>
+          </form>
+        </blockquote>
+
+        <!-- 表格主体 -->
+        <table id="roleTable" lay-filter="roleTableFilter"></table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(['table', 'app', 'jquery', 'util'], function () {
+    var table = layui.table,
+        app = layui.app,
+        util = layui.util,
+        form = layui.form,
+        $ = layui.jquery;
+
+    var table_id = 'roleTable';//表格id
+    var tableFilter = 'roleTableFilter';//表格filter
+    
+    var headToolbar = '#roleHeaderToolbar';//表格头工具栏id
+    var addEnent = 'roleAddEvent';//添加按钮event
+    var deleteListEnent = 'roleDeleteListEnent';//批量删除按钮event
+    var rowToolbarId = '#roleToolbarRow';//表格行工具栏id
+    var editEvent = 'roleEditEvent';//编辑按钮event
+    var delEvent = 'roleDelEvent';//删除按钮event
+    
+    var searchFormId = "#roleSearchForm";//表格搜索栏form id
+    var tableDataUrl = '/admin/role/list';//表格数据url
+    
+    var url_add = "#/role/create";//添加按钮url
+    var url_edit = "#/role/edit";//编辑按钮url
+    var url_del_server = "/admin/role/del";//删除按钮url
+    var url_dels_server = "/admin/role/dels";//批量删除按钮url
+    
+    //组装检索条件
+    var search_where = {
+            username: $(searchFormId +' input[name="roleName"]').val()
+    }
+    
+    //组装表格标题栏
+    var table_cols = [[ 
+                        {
+                            type: 'checkbox',
+                            width: 80,
+                            sort: true,
+                            fixed: 'left'
+                          }
+                          , {field: 'roleName', title: '角色名称'}
+                          , {
+                            field: 'createTime', title: '创建时间', sort: true, templet: function (row) {
+                              return util.toDateString(row.createTime);
+                            }
+                          }
+                          , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: rowToolbarId}
+                     ]];
+    
+	
+    //条件检索
+    $(searchFormId + ' .layui-btn').on('click', function () {
+    	//执行重载
+        table.reload(table_id, {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          , where: search_where
+        });
+    });
+
+    /**
+     * 初始化表格
+     * @param result
+     */
+    table.render({
+      elem: '#' + table_id
+      , title: '角色列表'
+      , toolbar: headToolbar
+      , done: function () {
+        $('#' + table_id).next().css('height', 'auto');
+      }
+      , url: tableDataUrl
+      , initSort: {
+        field: 'createTime' //排序字段，对应 cols 设定的各字段名
+        , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+      }
+      , parseData: function (res) {
+        app.result.handler(res);
+        return {
+          "code": res.code, //解析接口状态
+          "count": res.data.total, //解析数据长度
+          "data": res.data.records //解析数据列表
+        };
+      }
+      , page: true //开启分页
+      , limit: 20
+      , cols: table_cols
+
+    });
+
+    //排序监听
+    table.on('sort(' + tableFilter + ')', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+      //尽管我们的 table 自带排序功能，但并没有请求服务端。
+      //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+      table.reload(table_id, {
+        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+        , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+          field: obj.field //排序字段
+          , order: obj.type //排序方式
+        }
+      });
+    });
+
+    //头工具栏事件
+    table.on('toolbar(' + tableFilter + ')', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch (obj.event) {
+        //新增
+        case addEnent:
+          location.href = url_add;
+          break;
+        //批量删除
+        case deleteListEnent:
+          layer.confirm('确认删除吗', function (index) {
+            layer.close(index);
+            //向服务端发送删除指令
+            var ids = new Array();
+            var data = checkStatus.data;
+            $.each(data, function (index, instance) {
+
+              ids.push(instance.id);
+            });
+            app.post(url_dels_server, {ids: ids}, function (result) {
+              layer.msg(result.msg);
+              table.reload(table_id);
+            });
+
+          });
+          break;
+      }
+
+    });
+
+    //监听行工具事件
+    table.on('tool(' + tableFilter + ')', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      var data = obj.data //获得当前行数据
+          , layEvent = obj.event; //获得 lay-event 对应的值
+
+      switch (layEvent) {
+          //删除
+        case delEvent:
+          layer.confirm('确认删除吗', function (index) {
+            layer.close(index);
+            //向服务端发送删除指令
+            app.post(url_del_server, {id: data.id}, function (result) {
+              layer.msg(result.msg);
+              obj.del(); //删除对应行（tr）的DOM结构
+            });
+          });
+          break;
+        case editEvent:
+          location.href = url_edit + "?id=" + data.id;
+          break;
+      };
+    });
+
+  });
+
+
+</script>
+
+<!-- 工具栏 -->
+<script type="text/html" id="roleHeaderToolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="roleAddEvent"><i
+        class="layui-icon">&#xe654;</i>新增
+    </button>
+    <button class="layui-btn layui-btn-sm" lay-event="roleDeleteListEnent"><i
+        class="layui-icon">&#xe654;</i>批量删除
+    </button>
+  </div>
+</script>
+
+<!-- 表格行工具 -->
+<script type="text/html" id="roleToolbarRow">
+  <a class="layui-btn layui-btn-xs" lay-event="roleEditEvent">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="roleDelEvent">删除</a>
+</script>
+
+<!-- 样式 -->
+<style scoped>
+</style>

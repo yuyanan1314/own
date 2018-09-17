@@ -203,9 +203,9 @@
 
     //监听帐号锁定操作
     form.on('checkbox(statusTemplateFilter)', function (obj) {
-      var status = 2;
+      var status = 1;
       if (!obj.othis) {
-        status = 1;
+    	  obj.value  = 2;
       }
       app.post("/admin/sysUser/status", {statusEnum: status, id: obj.elem.id}, function (result) {
         layer.msg(result.msg);
@@ -219,8 +219,8 @@
 <!-- 帐号状态模板 -->
 <script type="text/html" id="statusTemplate">
   <!-- 这里的 checked 的状态只是演示 -->
-  <input type="checkbox" name="status" id="{{d.id}}" value="{{d.status.value}}" title="锁定"
-         lay-filter="statusTemplateFilter" {{ d.status.value== 2 ? 'checked' : '' }}>
+  <input type="checkbox" name="status" id="{{d.id}}" value="{{d.status.value}}" title="启用"
+         lay-filter="statusTemplateFilter" {{ d.status.value== 1 ? 'checked' : '' }}>
 
 </script>
 

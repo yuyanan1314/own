@@ -3,6 +3,7 @@ package com.fast.admin.web;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fast.admin.model.bo.SysUserEditBo;
 import com.fast.admin.model.bo.SysUserPageBo;
 import com.fast.common.annotation.Log;
 import com.fast.common.api.ApiException;
@@ -20,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
@@ -41,12 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "admin 用户管理", tags = " ")
 @RestController
 @RequestMapping("/admin/sysUser")
-public class SysUserController {
-
-	/**
-	 * admin 帐号id
-	 */
-	private static final String admin_id = "admin";
+public class SysUserController extends BasicController {
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -87,10 +84,14 @@ public class SysUserController {
 	@Log("用户添加")
 	@PostMapping("/add")
 	ApiResult<Object> add(@Validated SysUser user) {
+		if (user == null) {
+			throw ApiException.ApiExceptionBuilder.error("参数[user]为空");
+		}
 		try {
+			user.setStatus(SysUserStatusEnum.OPEN);
 			sysUserService.save(user);
 		} catch (DuplicateKeyException e) {
-			throw ApiException.ApiExceptionBuilder.error("[参数[user]为空");
+			throw ApiException.ApiExceptionBuilder.warn("用户名已存在");
 		}
 		return ApiResult.ok(null);
 	}
@@ -140,6 +141,40 @@ public class SysUserController {
 			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许锁定");
 		}
 		sysUserService.updateStatus(id, statusEnum);
+		return ApiResult.ok(null);
+	}
+	
+	@ApiOperation("根据id查询")
+	@Log("根据id查询")
+	@PostMapping("/get")
+	ApiResult<SysUser> get(String id) {
+		if (StringUtils.isBlank(id)) {
+			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+		}
+		SysUser user = sysUserService.getById(id);
+		return ApiResult.ok(user);
+	}
+	
+	@ApiOperation("用户编辑")
+	@Log("用户编辑")
+	@PostMapping("/edit")
+	ApiResult<Object> edit(@Validated SysUserEditBo user) {
+		if (user == null) {
+			throw ApiException.ApiExceptionBuilder.error("参数[user]为空");
+		}
+		if (user.getId() == null) {
+			throw ApiException.ApiExceptionBuilder.error("参数[userId]为空");
+		}
+		try {
+			SysUser old = sysUserService.getById(user.getId());
+			if (old == null) {
+				throw ApiException.ApiExceptionBuilder.error("参数[userId]无效");
+			}
+			BeanUtils.copyProperties(user, old);
+			sysUserService.updateById(old);
+		} catch (DuplicateKeyException e) {
+			throw ApiException.ApiExceptionBuilder.warn("用户名已存在");
+		}
 		return ApiResult.ok(null);
 	}
 }

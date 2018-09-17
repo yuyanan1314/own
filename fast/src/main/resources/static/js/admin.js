@@ -146,6 +146,18 @@ layui.define(mods, function(exports) {
         // name: 'kitadmin',
         r: [],
         routes: [{
+          path: '/role/index',
+          component: '/views/role/index.html',
+          name: '角色列表'
+        }, {
+          path: '/role/create',
+          component: '/views/role/create.html',
+          name: '添加角色',
+        }, {
+          path: '/role/edit',
+          component: '/views/role/edit.html',
+          name: '编辑角色',
+        },{
           path: '/user/index',
           component: '/views/user/index.html',
           name: '用户列表'

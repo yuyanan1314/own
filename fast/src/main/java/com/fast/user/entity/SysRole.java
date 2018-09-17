@@ -26,26 +26,25 @@ public class SysRole extends SuperEntity {
 
 	@TableField(exist = false)
 	private static final long serialVersionUID = 1L;
-	
-		  /**
-   * 角色名称
-   */
-		    @TableField(value="role_name")
-		 	 private String roleName;
-		  /**
-   * 角色标识
-   */
-		    @TableField(value="role_sign")
-		 	 private String roleSign;
-		  /**
-   * 备注
-   */
-		 	 private String remark;
-		  /**
-   * 创建人
-   */
-		    @TableField(value="create_user_id")
-		 	 private String createUserId;
-					
-}
 
+	/**
+	 * 角色名称
+	 */
+	@TableField(value = "role_name")
+	private String roleName;
+	/**
+	 * 角色标识
+	 */
+	@TableField(value = "role_sign")
+	private String roleSign;
+	/**
+	 * 备注
+	 */
+	private String remark;
+	/**
+	 * 创建人
+	 */
+	@TableField(value = "create_user_id")
+	private String createUserId;
+
+}

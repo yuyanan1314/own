@@ -6,8 +6,7 @@
           <a href="#/user/index" title="返回"><i class="layui-icon">&#xe65c;</i></a>返回
         </div>
         <div class="layui-card-body">
-          <form class="layui-form" action="" lay-filter="sysUserEditFormFilter">
-          	<input name="id" type = "hidden">
+          <form class="layui-form" action="">
             <div class="layui-form-item">
               <label class="layui-form-label">用户名</label>
               <div class="layui-input-inline">
@@ -20,14 +19,23 @@
               </div>
             </div>
             <div class="layui-form-item">
+              <label class="layui-form-label">密码</label>
+              <div class="layui-input-inline">
+                <input type="password" name="password" lay-verify="required|pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
+
               <label class="layui-form-label">手机号</label>
               <div class="layui-input-inline">
                 <input type="text" name="mobile"  lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
               </div>
+            </div>
+            <div class="layui-form-item">
               <label class="layui-form-label">邮箱</label>
               <div class="layui-input-inline">
                 <input type="text" name="email"   placeholder="请输入邮箱" autocomplete="off" class="layui-input">
               </div>
+
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">性别</label>
@@ -37,15 +45,8 @@
               </div>
             </div>
             <div class="layui-form-item">
-             <label class="layui-form-label">账号状态</label>
               <div class="layui-input-block">
-                <input type="radio" name="status" value="1" title="正常">
-                <input type="radio" name="status" value="2" title="禁用" checked>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="sysUserEditForm">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="sysUserAddForm">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
               </div>
             </div>
@@ -59,25 +60,8 @@
   layui.use(['form', 'app'], function() {
     var form = layui.form,
         app = layui.app;
-    var router = layui.route;
-    var params = router.params();
-	var id = params.id;
+
     form.render();
-    
-    //根据id获取信息
-    app.post("/admin/sysUser/get", {id:params.id}, function(result) {
-    	 var pojo = result.data;
-    	 //表单赋值 name value
-    	 form.val('sysUserEditFormFilter', {
-    		 	"id": id
-    	        ,"username": pojo.username 
-    	        ,"realname": pojo.realname
-    	        ,"mobile": pojo.mobile 
-    	        ,"email": pojo.email 
-    	        ,"sex": pojo.sex.value
-    	        ,"status": pojo.status.value
-    	      })
-    });
 
     //自定义验证规则
     form.verify({
@@ -88,10 +72,11 @@
       }
       ,pass: [/(.+){6,20}$/, '密码必须6到20位']
     });
-    
+
     //监听提交
-    form.on('submit(sysUserEditForm)', function(data) {
-      app.post("/admin/sysUser/edit", data.field, function(result) {
+    form.on('submit(sysUserAddForm)', function(data) {
+      layer.msg(JSON.stringify(data.field));
+      app.post("/admin/sysUser/add", data.field, function(result) {
         layer.msg(result.msg);
         location.href = "#/user/index";
       });
