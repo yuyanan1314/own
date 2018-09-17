@@ -7,7 +7,10 @@ import com.fast.admin.model.bo.SysUserPageBo;
 import com.fast.common.annotation.Log;
 import com.fast.common.api.ApiException;
 import com.fast.common.api.ApiResult;
+import com.fast.common.util.Constant.Sys;
 import com.fast.user.entity.SysUser;
+import com.fast.user.entity.enums.SexEnum;
+import com.fast.user.entity.enums.SysUserStatusEnum;
 import com.fast.user.service.SysUserService;
 import com.google.common.collect.Lists;
 
@@ -35,10 +38,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yuyanan
  * @since 2018-07-16
  */
-@Api(value = "admin 用户管理", tags = "123")
+@Api(value = "admin 用户管理", tags = " ")
 @RestController
 @RequestMapping("/admin/sysUser")
 public class SysUserController {
+
+	/**
+	 * admin 帐号id
+	 */
+	private static final String admin_id = "admin";
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -47,18 +55,20 @@ public class SysUserController {
 	@Log("用户列表")
 	@GetMapping("/list")
 	ApiResult<IPage<SysUser>> page(SysUserPageBo pageBo) {
+		if(pageBo == null){
+			throw ApiException.ApiExceptionBuilder.error("参数[SysUserPageBo]为空");
+		}
+
 		QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
 		// 条件
-		if (pageBo != null) {
-			if (StringUtils.isNotBlank(pageBo.getUsername())) {
-				queryWrapper.like("username", pageBo.getUsername());
-			}
-			if (StringUtils.isNotBlank(pageBo.getRealname())) {
-				queryWrapper.like("realname", pageBo.getRealname());
-			}
-			if (StringUtils.isNotBlank(pageBo.getMobile())) {
-				queryWrapper.like("mobile", pageBo.getMobile());
-			}
+		if (StringUtils.isNotBlank(pageBo.getUsername())) {
+			queryWrapper.like("username", pageBo.getUsername());
+		}
+		if (StringUtils.isNotBlank(pageBo.getRealname())) {
+			queryWrapper.like("realname", pageBo.getRealname());
+		}
+		if (StringUtils.isNotBlank(pageBo.getMobile())) {
+			queryWrapper.like("mobile", pageBo.getMobile());
 		}
 		// 排序
 		if (StringUtils.isNotBlank(pageBo.getField())) {
@@ -80,7 +90,7 @@ public class SysUserController {
 		try {
 			sysUserService.save(user);
 		} catch (DuplicateKeyException e) {
-			throw ApiException.ApiExceptionBuilder.error("参数为空");
+			throw ApiException.ApiExceptionBuilder.error("[参数[user]为空");
 		}
 		return ApiResult.ok(null);
 	}
@@ -90,9 +100,13 @@ public class SysUserController {
 	@PostMapping("/dels")
 	ApiResult<Object> dels(@RequestParam("ids[]") String[] ids) {
 		if (ids == null || ids.length == 0) {
-			throw ApiException.ApiExceptionBuilder.error("参数为空");
+			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
 		}
-		sysUserService.removeByIds(Lists.newArrayList(ids));
+		List<String> idList = Lists.newArrayList(ids);
+		if (idList.contains(admin_id)){
+			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
+		}
+		sysUserService.removeByIds(idList);
 		return ApiResult.ok(null);
 	}
 
@@ -101,9 +115,31 @@ public class SysUserController {
 	@PostMapping("/del")
 	ApiResult<Object> del(String id) {
 		if (StringUtils.isBlank(id)) {
-			throw ApiException.ApiExceptionBuilder.error("参数为空");
+			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+		}
+		if (id.equals(admin_id)){
+			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
 		}
 		sysUserService.removeById(id);
+		return ApiResult.ok(null);
+	}
+
+	@ApiOperation("修改性别")
+	@Log("修改性别")
+	@PostMapping("/sex")
+	ApiResult<Object> sex(String id, SexEnum sex) {
+		sysUserService.updateSex(id, sex);
+		return ApiResult.ok(null);
+	}
+
+	@ApiOperation("帐号锁定")
+	@Log("修改性别")
+	@PostMapping("/status")
+	ApiResult<Object> status(String id, SysUserStatusEnum statusEnum) {
+		if (id.equals(admin_id)){
+			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许锁定");
+		}
+		sysUserService.updateStatus(id, statusEnum);
 		return ApiResult.ok(null);
 	}
 }

@@ -74,14 +74,15 @@
 </div>
 <script>
   //Demo
-  layui.use('form', function() {
+  layui.use(['form', 'route'], function() {
     var form = layui.form;
-    
     form.render();
-
+    var router = layui.route;
+    var params = router.params();
+    layer.alert(params.id);//弹出提示 “xxx”
     //监听提交
     form.on('submit(formDemo)', function(data) {
-      layer.msg(JSON.stringify(data.field));
+
       return false;
     });
   });

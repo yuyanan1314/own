@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yuyanan
  * @date 2018年9月11日
  */
-@Api("admin登陆后的基本功能")
+@Api(value = "admin 登陆后的基本功能", tags = " ")
 @RestController
 public class HomeController extends SuperController {
 

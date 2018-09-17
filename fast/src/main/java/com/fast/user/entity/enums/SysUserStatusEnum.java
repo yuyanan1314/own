@@ -4,27 +4,27 @@ import com.baomidou.mybatisplus.core.enums.IEnum;
 import com.fast.common.supers.IBindEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 /**
- * 用户性别
+ * 用户帐号状态
  *
  * @author yuyanan
- * @date   2018年7月21日
+ * @date 2018年7月21日
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum SexEnum implements IEnum<Integer>,
-                               IBindEnum{
-    MAN(1, "男"), WOMAN(2, "女"),;
+public enum  SysUserStatusEnum implements IEnum<Integer>,
+                                          IBindEnum {
+
+    OPEN(1,"启用"),LOCK(2,"禁用"),;
 
     private Integer value;
     private String desc;
 
-    SexEnum(final int value, final String desc) {
+    SysUserStatusEnum(final int value, final String desc) {
         this.value = value;
         this.desc = desc;
     }
 
-    SexEnum(final int value) {
+    SysUserStatusEnum(final int value) {
         this.value = value;
     }
 

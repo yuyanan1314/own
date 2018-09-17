@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fast.common.supers.SuperEntity;
 import com.fast.user.entity.enums.SexEnum;
 
+import com.fast.user.entity.enums.SysUserStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -69,9 +70,9 @@ public class SysUser extends SuperEntity {
      */
     private String mobile;
     /**
-     * 状态 1启用 2禁用
+     * 状态
      */
-    private Integer status;
+    private SysUserStatusEnum status;
     /**
      * 生日
      */
