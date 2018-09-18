@@ -12,8 +12,6 @@
 package com.fast.admin.model.bo;
 
 
-import java.io.Serializable;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -30,26 +28,40 @@ import com.fast.user.entity.enums.SysUserStatusEnum;
  * @date:   2018年9月17日      
  */
 @Data
-@ApiModel("用户编辑入参")
-public class SysUserEditBo implements Serializable{
+@ApiModel("返回响应信息")
+public class SysUserAddBo {
 	
-	private static final long serialVersionUID = 1L;
-
-	@NotBlank
-    private String id;
+    /**
+     * 用户名
+     */
+	@ApiModelProperty("用户名")
+    @NotBlank
+    private String username;
     
-    @ApiModelProperty("用户名")
+    /**
+     * 密码
+     */
+	@ApiModelProperty("密码")
+    @NotBlank
+    private String password;
+    
+    /**
+     * 真实姓名
+     */
+	@ApiModelProperty("真实姓名")
     private String realname;
-    
-    @ApiModelProperty("性别")
+	
+    /**
+     * 性别
+     */
+	@ApiModelProperty("性别")
     private SexEnum sex;
-    
-    @ApiModelProperty("邮箱")
+    /**
+     * email
+     */
     private String email;
-    
-    @ApiModelProperty("手机号")
+    /**
+     * 手机号
+     */
     private String mobile;
-    
-    @ApiModelProperty("账号状态")
-    private SysUserStatusEnum status;
 }

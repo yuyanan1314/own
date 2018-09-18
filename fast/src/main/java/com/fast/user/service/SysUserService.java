@@ -1,5 +1,9 @@
 package com.fast.user.service;
 
+import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.fast.admin.model.bo.SysUserPageBo;
 import com.fast.common.supers.SuperService;
 import com.fast.user.entity.SysUser;
 import com.fast.user.entity.enums.SexEnum;
@@ -12,6 +16,16 @@ import com.fast.user.entity.enums.SysUserStatusEnum;
  * @date 2018年7月21日
  */
 public interface SysUserService extends SuperService<SysUser> {
+	
+	//系统管理员  角色 账号id值  不允许删除
+	public static final String admin_id = "admin";
+	
+	/**
+	 * 分页查询
+	 * @param pageBo
+	 * @return
+	 */
+	IPage<SysUser> page(SysUserPageBo pageBo);
 
     /**
      * 登陆
@@ -37,4 +51,16 @@ public interface SysUserService extends SuperService<SysUser> {
      * @param statusEnum 性别
      */
     void updateStatus(String id, SysUserStatusEnum statusEnum);
+    
+    /**
+     * 删除
+     * @param id id
+     */
+    void removeById(String id);
+    
+    /**
+     * 批量删除
+     * @param id
+     */
+    void removeByIds(List<String> ids);
 }

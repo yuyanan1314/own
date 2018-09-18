@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author yuyanan
  */
-@Api(value = "admin 基本导航", tags = " ")
+@Api(tags = {"admin-导航"})
 @Controller
 public class IndexController extends SuperController {
 

@@ -77,7 +77,6 @@
     form.on('submit(sysUserAddForm)', function(data) {
       layer.msg(JSON.stringify(data.field));
       app.post("/admin/sysUser/add", data.field, function(result) {
-        layer.msg(result.msg);
         location.href = "#/user/index";
       });
       return false;

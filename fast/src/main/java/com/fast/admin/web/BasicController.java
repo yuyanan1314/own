@@ -19,5 +19,4 @@ package com.fast.admin.web;
  */
 public class BasicController {
 	
-	protected static final String admin_id = "admin";
 }

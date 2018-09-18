@@ -3,49 +3,20 @@
     <div class="layui-col-xs12">
       <div class="layui-card">
         <div class="layui-card-header">
-          <a href="#/user/index" title="返回"><i class="layui-icon">&#xe65c;</i></a>返回
+          <a href="#/role/index" title="返回"><i class="layui-icon">&#xe65c;</i></a>返回
         </div>
         <div class="layui-card-body">
-          <form class="layui-form" action="" lay-filter="sysUserEditFormFilter">
-          	<input name="id" type = "hidden">
+          <form class="layui-form" action="" lay-filter="editFormFilter">
+           <input name="id" type = "hidden">
             <div class="layui-form-item">
-              <label class="layui-form-label">用户名</label>
+              <label class="layui-form-label">角色名称</label>
               <div class="layui-input-inline">
-                <input type="text" name="username"  lay-verify="title" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-              </div>
-
-              <label class="layui-form-label">姓名</label>
-              <div class="layui-input-inline">
-                <input type="text" name="realname"  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">手机号</label>
-              <div class="layui-input-inline">
-                <input type="text" name="mobile"  lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-              </div>
-              <label class="layui-form-label">邮箱</label>
-              <div class="layui-input-inline">
-                <input type="text" name="email"   placeholder="请输入邮箱" autocomplete="off" class="layui-input">
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">性别</label>
-              <div class="layui-input-block">
-                <input type="radio" name="sex" value="1" title="男">
-                <input type="radio" name="sex" value="2" title="女" checked>
-              </div>
-            </div>
-            <div class="layui-form-item">
-             <label class="layui-form-label">账号状态</label>
-              <div class="layui-input-block">
-                <input type="radio" name="status" value="1" title="正常">
-                <input type="radio" name="status" value="2" title="禁用" checked>
+                <input type="text" name="roleName"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
               </div>
             </div>
             <div class="layui-form-item">
               <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="sysUserEditForm">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="editFormSubmit">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
               </div>
             </div>
@@ -60,40 +31,25 @@
     var form = layui.form,
         app = layui.app;
     var router = layui.route;
+    
     var params = router.params();
 	var id = params.id;
     form.render();
     
     //根据id获取信息
-    app.post("/admin/sysUser/get", {id:params.id}, function(result) {
+    app.post("/admin/role/get", {id:params.id}, function(result) {
     	 var pojo = result.data;
     	 //表单赋值 name value
-    	 form.val('sysUserEditFormFilter', {
+    	 form.val('editFormFilter', {
     		 	"id": id
-    	        ,"username": pojo.username 
-    	        ,"realname": pojo.realname
-    	        ,"mobile": pojo.mobile 
-    	        ,"email": pojo.email 
-    	        ,"sex": pojo.sex.value
-    	        ,"status": pojo.status.value
+    	        ,"roleName": pojo.roleName 
     	      })
     });
 
-    //自定义验证规则
-    form.verify({
-      title: function(value){
-        if(value.length < 6 || value >20){
-          return '用户名长度[6-20],数字与字母组合';
-        }
-      }
-      ,pass: [/(.+){6,20}$/, '密码必须6到20位']
-    });
-    
     //监听提交
-    form.on('submit(sysUserEditForm)', function(data) {
-      app.post("/admin/sysUser/edit", data.field, function(result) {
-        layer.msg(result.msg);
-        location.href = "#/user/index";
+    form.on('submit(editFormSubmit)', function(data) {
+      app.post("/admin/role/edit", data.field, function(result) {
+        location.href = "#/role/index";
       });
       return false;
     });

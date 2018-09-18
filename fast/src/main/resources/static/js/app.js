@@ -50,7 +50,7 @@ layui.define([ 'jquery', 'layer' ], function(exports) {
 			layer.msg("提示:" + result.msg);
 			break;
 		case 2:
-			layer.msg("错误码[" + result.code + "]:" + result.msg);
+			layer.msg("系统错误[" + result.code + "]:" + result.msg);
 			break;
 
 		default:

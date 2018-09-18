@@ -17,5 +17,9 @@ public class SessionSysUser {
     private String realname;
 
     private SexEnum sex;
+    
+    private String roleId;
+    
+    private String roleName;
 
 }

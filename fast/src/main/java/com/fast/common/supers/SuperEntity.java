@@ -37,18 +37,18 @@ public class SuperEntity implements Serializable {
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private Date updateTime;
 
-    /**
-     * 是否删除 1是 0否
-     */
-    @TableLogic
-    @TableField(value = "deleted")
-    private Integer deleted;
-
-    /**
-     * 乐观锁-版本号
-     */
-    @Version
-    @TableField(value = "version")
-    private Integer version;
+//    /**
+//     * 是否删除 1是 0否
+//     */
+//    @TableLogic
+//    @TableField(value = "deleted")
+//    private Integer deleted;
+//
+//    /**
+//     * 乐观锁-版本号
+//     */
+//    @Version
+//    @TableField(value = "version")
+//    private Integer version;
 
 }

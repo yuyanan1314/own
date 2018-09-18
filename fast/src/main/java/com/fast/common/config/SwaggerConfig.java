@@ -37,6 +37,8 @@ public class SwaggerConfig {
 	public Docket docket() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
+				//关闭默认
+				.useDefaultResponseMessages(false)
 				.select()
 				// 当前包路径
 				.apis(RequestHandlerSelectors
@@ -50,10 +52,9 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 		// 页面标题
 				.title("FAST ADMIN API")
-                .description("fast项目后台api接口文档")
+                .description("fast admin api 接口文档")
+                // 版本号
                 .version("1.0")
-				// 版本号
-				.version("1.0")
 				// 描述
 				.description("API 描述").build();
 	}

@@ -36,6 +36,12 @@ public class SysUser extends SuperEntity {
 	@TableField(exist = false)
 	private List<String> auths;
 	
+	@TableField(exist = false)
+	private String roleId;
+	
+	@TableField(exist = false)
+	private String roleName;
+	
     /**
      * 用户名
      */

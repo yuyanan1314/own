@@ -6,14 +6,14 @@
 
         <!-- 条件检索 -->
         <blockquote class="layui-elem-quote quoteBox" style="margin-bottom: -5px;">
-          <form class="layui-form" id="roleSearchForm">
+          <form class="layui-form" id="searchForm">
             <div class="layui-inline">
               <label class="layui-form-label">角色名</label>
               <div class="layui-input-inline">
                 <input type="text" name="roleName" class="layui-input" placeholder="请输入查询条件"/>
               </div>
             </div>
-            <a class="layui-btn" data-type="reload">搜索</a>
+            <a class="layui-btn" id="roleSearchFormBtn" data-type="reload">搜索</a>
           </form>
         </blockquote>
 
@@ -51,11 +51,6 @@
     var url_del_server = "/admin/role/del";//删除按钮url
     var url_dels_server = "/admin/role/dels";//批量删除按钮url
     
-    //组装检索条件
-    var search_where = {
-            username: $(searchFormId +' input[name="roleName"]').val()
-    }
-    
     //组装表格标题栏
     var table_cols = [[ 
                         {
@@ -73,18 +68,19 @@
                           , {fixed: 'right', title: '操作', width: 165, align: 'center', toolbar: rowToolbarId}
                      ]];
     
-	
-    //条件检索
-    $(searchFormId + ' .layui-btn').on('click', function () {
+  //条件检索
+    $('#roleSearchFormBtn').on('click', function () {
     	//执行重载
         table.reload(table_id, {
           page: {
             curr: 1 //重新从第 1 页开始
           }
-          , where: search_where
+          , where: {
+              roleName:  $('#searchForm input[name="roleName"]').val(),
+          }
         });
     });
-
+    
     /**
      * 初始化表格
      * @param result

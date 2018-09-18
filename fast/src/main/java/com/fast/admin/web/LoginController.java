@@ -27,7 +27,7 @@ import com.fast.user.service.SysUserService;
  * @author yuyanan
  * @date 2018年9月11日
  */
-@Api(value = "admin 用户登陆", tags = " ")
+@Api(tags = "admin-登陆")
 @RestController
 public class LoginController extends SuperController {
 

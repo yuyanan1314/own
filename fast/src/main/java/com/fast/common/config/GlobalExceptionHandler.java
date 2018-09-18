@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -71,11 +72,19 @@ public class GlobalExceptionHandler {
 						JsonTool.beanToJson(jsonList));
 			}
 		}
-
+		
+		/*
+		 * 数据关联删除异常
+		 */
+		if (e instanceof DataIntegrityViolationException) {
+			return ApiResult.fail(ApiErrorCode.ERROR.getCode(), "数据使用中,不允许删除");
+		}
+		
+		
 		/**
 		 * 系统内部异常，打印异常栈
 		 */
-		logger.error("Error: handleBadRequest StackTrace", e);
+		logger.error("Error: System Exception", e);
 		return ApiResult.fail(ApiErrorCode.ERROR.getCode(), e.getMessage());
 	}
 }

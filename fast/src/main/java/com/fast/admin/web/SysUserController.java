@@ -3,6 +3,7 @@ package com.fast.admin.web;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fast.admin.model.bo.SysUserAddBo;
 import com.fast.admin.model.bo.SysUserEditBo;
 import com.fast.admin.model.bo.SysUserPageBo;
 import com.fast.common.annotation.Log;
@@ -40,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yuyanan
  * @since 2018-07-16
  */
-@Api(value = "admin 用户管理", tags = " ")
+@Api(tags = {"admin-用户管理"})
 @RestController
 @RequestMapping("/admin/sysUser")
 public class SysUserController extends BasicController {
@@ -52,42 +53,20 @@ public class SysUserController extends BasicController {
 	@Log("用户列表")
 	@GetMapping("/list")
 	ApiResult<IPage<SysUser>> page(SysUserPageBo pageBo) {
-		if(pageBo == null){
-			throw ApiException.ApiExceptionBuilder.error("参数[SysUserPageBo]为空");
-		}
-
-		QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-		// 条件
-		if (StringUtils.isNotBlank(pageBo.getUsername())) {
-			queryWrapper.like("username", pageBo.getUsername());
-		}
-		if (StringUtils.isNotBlank(pageBo.getRealname())) {
-			queryWrapper.like("realname", pageBo.getRealname());
-		}
-		if (StringUtils.isNotBlank(pageBo.getMobile())) {
-			queryWrapper.like("mobile", pageBo.getMobile());
-		}
-		// 排序
-		if (StringUtils.isNotBlank(pageBo.getField())) {
-			queryWrapper.orderBy(true, pageBo.isAsc(), pageBo.getField());
-		} else {
-			queryWrapper.orderBy(true, false, "createTime");
-		}
-
-		IPage<SysUser> page = sysUserService.page(
-				new Page<SysUser>(pageBo.getPage(), pageBo.getLimit()),
-				queryWrapper);
-		return ApiResult.ok(page);
+		
+		return ApiResult.ok(sysUserService.page(pageBo));
 	}
 
-	@ApiOperation("用户添加")
+	@ApiOperation(value = "用户添加")
 	@Log("用户添加")
 	@PostMapping("/add")
-	ApiResult<Object> add(@Validated SysUser user) {
-		if (user == null) {
+	ApiResult<Object> add(@Validated SysUserAddBo addBo) {
+		if (addBo == null) {
 			throw ApiException.ApiExceptionBuilder.error("参数[user]为空");
 		}
 		try {
+			SysUser user = new SysUser();
+			BeanUtils.copyProperties(addBo, user);
 			user.setStatus(SysUserStatusEnum.OPEN);
 			sysUserService.save(user);
 		} catch (DuplicateKeyException e) {
@@ -104,9 +83,6 @@ public class SysUserController extends BasicController {
 			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
 		}
 		List<String> idList = Lists.newArrayList(ids);
-		if (idList.contains(admin_id)){
-			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
-		}
 		sysUserService.removeByIds(idList);
 		return ApiResult.ok(null);
 	}
@@ -115,12 +91,6 @@ public class SysUserController extends BasicController {
 	@Log("用户id删除")
 	@PostMapping("/del")
 	ApiResult<Object> del(String id) {
-		if (StringUtils.isBlank(id)) {
-			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
-		}
-		if (id.equals(admin_id)){
-			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
-		}
 		sysUserService.removeById(id);
 		return ApiResult.ok(null);
 	}
@@ -137,7 +107,7 @@ public class SysUserController extends BasicController {
 	@Log("修改性别")
 	@PostMapping("/status")
 	ApiResult<Object> status(String id, SysUserStatusEnum statusEnum) {
-		if (id.equals(admin_id)){
+		if (id.equals(SysUserService.admin_id)){
 			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许锁定");
 		}
 		sysUserService.updateStatus(id, statusEnum);

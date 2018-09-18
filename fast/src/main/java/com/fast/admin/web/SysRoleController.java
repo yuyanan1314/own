@@ -27,6 +27,7 @@ import com.fast.common.api.ApiException;
 import com.fast.common.api.ApiResult;
 import com.fast.user.entity.SysRole;
 import com.fast.user.service.SysRoleService;
+import com.fast.user.service.SysUserService;
 import com.google.common.collect.Lists;
 
 /**
@@ -37,7 +38,7 @@ import com.google.common.collect.Lists;
  * @author yuyanan
  * @since 2018-07-16
  */
-@Api(value = "admin 角色管理", tags = " ")
+@Api(tags = "admin-角色管理")
 @RestController
 @RequestMapping("/admin/role")
 public class SysRoleController extends BasicController {
@@ -56,7 +57,7 @@ public class SysRoleController extends BasicController {
 		QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
 		// 条件
 		if (StringUtils.isNotBlank(pageBo.getRoleName())) {
-			queryWrapper.like("roleName", pageBo.getRoleName());
+			queryWrapper.like("role_name", pageBo.getRoleName());
 		}
 		// 排序
 		if (StringUtils.isNotBlank(pageBo.getField())) {
@@ -92,7 +93,7 @@ public class SysRoleController extends BasicController {
 			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
 		}
 		List<String> idList = Lists.newArrayList(ids);
-		if (idList.contains(admin_id)) {
+		if (idList.contains(SysUserService.admin_id)) {
 			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
 		}
 		roleService.removeByIds(idList);
@@ -106,7 +107,7 @@ public class SysRoleController extends BasicController {
 		if (StringUtils.isBlank(id)) {
 			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
 		}
-		if (id.equals(admin_id)) {
+		if (id.equals(SysUserService.admin_id)) {
 			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
 		}
 		roleService.removeById(id);
