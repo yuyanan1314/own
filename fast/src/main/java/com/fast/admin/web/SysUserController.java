@@ -11,8 +11,11 @@ import com.fast.common.api.ApiException;
 import com.fast.common.api.ApiResult;
 import com.fast.common.util.Constant.Sys;
 import com.fast.user.entity.SysUser;
+import com.fast.user.entity.SysUserRole;
 import com.fast.user.entity.enums.SexEnum;
 import com.fast.user.entity.enums.SysUserStatusEnum;
+import com.fast.user.service.SysRoleService;
+import com.fast.user.service.SysUserRoleService;
 import com.fast.user.service.SysUserService;
 import com.google.common.collect.Lists;
 
@@ -48,6 +51,9 @@ public class SysUserController extends BasicController {
 
 	@Autowired
 	private SysUserService sysUserService;
+	
+	@Autowired
+	private SysUserRoleService sysUserRoleService;
 
 	@ApiOperation("用户列表")
 	@Log("用户列表")
@@ -69,6 +75,11 @@ public class SysUserController extends BasicController {
 			BeanUtils.copyProperties(addBo, user);
 			user.setStatus(SysUserStatusEnum.OPEN);
 			sysUserService.save(user);
+			//添加用户角色关系
+			SysUserRole userRole = new SysUserRole();
+			userRole.setUserId(user.getId());
+			userRole.setRoleId(addBo.getRoleId());
+			sysUserRoleService.save(userRole);
 		} catch (DuplicateKeyException e) {
 			throw ApiException.ApiExceptionBuilder.warn("用户名已存在");
 		}

@@ -6,30 +6,41 @@
           <a href="#/user/index" title="返回"><i class="layui-icon">&#xe65c;</i></a>返回
         </div>
         <div class="layui-card-body">
-          <form class="layui-form" action="" lay-filter="sysUserEditFormFilter">
+          <form class="layui-form layui-form-pane" action="" lay-filter="sysUserEditFormFilter">
           	<input name="id" type = "hidden">
-            <div class="layui-form-item">
+            <div class="layui-form-item" >
               <label class="layui-form-label">用户名</label>
               <div class="layui-input-inline">
-                <input type="text" name="username"  disabled="disabled"   lay-verify="title" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                <input type="text" name="username"  lay-verify="title" placeholder="请输入用户名" autocomplete="off" class="layui-input">
               </div>
-
-              <label class="layui-form-label">姓名</label>
-              <div class="layui-input-inline">
-                <input type="text" name="realname"  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-              </div>
+              <div class="layui-form-mid layui-word-aux">请填写6到12位用户名</div>
+              <label class="layui-form-label">角色</label>
+			    <div class="layui-input-inline" pane>
+			      <select id="sysRole" name="roleId" lay-filter="roleFilter">
+			        
+			      </select>
+			    </div>
             </div>
             <div class="layui-form-item">
+
               <label class="layui-form-label">手机号</label>
               <div class="layui-input-inline">
                 <input type="text" name="mobile"  lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
               </div>
+            </div>
+            <div class="layui-form-item">
+             <label class="layui-form-label">姓名</label>
+              <div class="layui-input-inline">
+                <input type="text" name="realname"  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+              </div>
+				<div class="layui-form-mid layui-word-aux">请填写您的真实姓名</div>
+            
               <label class="layui-form-label">邮箱</label>
               <div class="layui-input-inline">
                 <input type="text" name="email"   placeholder="请输入邮箱" autocomplete="off" class="layui-input">
               </div>
             </div>
-            <div class="layui-form-item">
+            <div class="layui-form-item" >
               <label class="layui-form-label">性别</label>
               <div class="layui-input-block">
                 <input type="radio" name="sex" value="1" title="男">
@@ -37,15 +48,8 @@
               </div>
             </div>
             <div class="layui-form-item">
-             <label class="layui-form-label">账号状态</label>
               <div class="layui-input-block">
-                <input type="radio" name="status" value="1" title="正常">
-                <input type="radio" name="status" value="2" title="禁用" checked>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="sysUserEditForm">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="sysUserAddForm">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
               </div>
             </div>
@@ -58,11 +62,22 @@
 <script>
   layui.use(['form', 'app'], function() {
     var form = layui.form,
+    	$ = layui.jquery,
         app = layui.app;
     var router = layui.route;
     var params = router.params();
 	var id = params.id;
-    form.render();
+    
+    
+    app.get("/admin/role/list?page=1&limit=500", {}, function (result) {
+    	var datas = result.data.records;
+    	var option = "";
+    	$.each(datas,function(index,obj){
+    		option = '<option value="'+obj.id+'">'+obj.roleName+'</option>';
+    	});
+    	$('#sysRole').html(option);
+    	form.render();
+    });
     
     //根据id获取信息
     app.post("/admin/sysUser/get", {id:params.id}, function(result) {
@@ -77,6 +92,7 @@
     	        ,"sex": pojo.sex.value
     	        ,"status": pojo.status.value
     	      })
+    	      form.render();
     });
 
     //自定义验证规则

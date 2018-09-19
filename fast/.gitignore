@@ -6,4 +6,4 @@
 /.project
 /build.gradle
 /mybatisplus-spring-boot.iml
-/src/resources/application-*.yml
+/application-dev.yml

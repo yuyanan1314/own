@@ -59,9 +59,18 @@ public class SysUserAddBo {
     /**
      * email
      */
+	@ApiModelProperty("email")
     private String email;
     /**
      * 手机号
      */
+	@ApiModelProperty("手机号")
     private String mobile;
+    
+    /**
+     * 角色id
+     */
+	@ApiModelProperty("角色id")
+    @NotBlank
+    private String roleId;
 }
