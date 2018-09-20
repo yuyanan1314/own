@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fast.common.annotation.Log;
 import com.fast.common.api.ApiResult;
+import com.fast.common.log.annotation.Log;
 import com.fast.common.supers.SuperController;
 import com.fast.user.entity.SysUser;
 import com.fast.user.service.SysUserService;

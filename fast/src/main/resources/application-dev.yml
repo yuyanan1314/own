@@ -3,9 +3,10 @@ server:
     port: 9099
     
 # log4j
-logging:
+logging: 
   level:
-    com.yyn: debug
+    org.springframework.web: info
+    com.fast: debug
     
 # Spring profiles configuration
 ---

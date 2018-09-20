@@ -3,7 +3,7 @@ package com.fast.admin.web;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import com.fast.common.annotation.Log;
+import com.fast.common.log.annotation.Log;
 import com.fast.common.supers.SuperController;
 
 import org.springframework.stereotype.Controller;
