@@ -29,19 +29,8 @@ import com.fast.common.log.aop.LogAop;
  */
 // 存在LogAop这个类才装配当前类
 @Configuration
-@Order(Ordered.LOWEST_PRECEDENCE)
-@ConditionalOnClass(LogAop.class)
-public class LogAopAutoConfiguration 
+@ConditionalOnMissingBean(LogAop.class)
+public class LogAopDefaultConfiguration extends LogAop
 {
-    @Bean
-    @ConditionalOnMissingBean
-    public DefaultLogBeforeProcessor before(){
-       return new DefaultLogBeforeProcessor();
-    }
-    
-    @Bean
-    @ConditionalOnMissingBean
-    public ILogAfterProcessor after(){
-       return new DefaultLogAfterProcessor();
-    }
+
 }

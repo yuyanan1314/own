@@ -20,7 +20,7 @@ import com.fast.common.log.aop.LogAop;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(LogAop.class)
+@Import(LogAopDefaultConfiguration.class)
 public @interface EnableAutoLog
 {
     

@@ -14,8 +14,8 @@ public interface ILogAfterProcessor
     /**
      * 日志处理
      * 
-     * @param log Log
+     * @param logVo Log
      * @param executeTime 业务方法消耗的时间
      */
-    public void afterExecute(Log logVo, long executeTime);
+     void execute(Log logVo, long executeTime);
 }

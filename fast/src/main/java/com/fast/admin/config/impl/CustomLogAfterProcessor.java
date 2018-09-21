@@ -15,6 +15,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,7 @@ import com.fast.user.service.SysLogService;
  * @author: yuyanan
  * @date:   2018年9月21日      
  */
+@Slf4j
 public class CustomLogAfterProcessor implements ILogAfterProcessor
 {
 
@@ -37,9 +39,10 @@ public class CustomLogAfterProcessor implements ILogAfterProcessor
     private SysLogService logService;
     
     @Override
-    public void afterExecute(Log logVo, long executeTime)
+    public void execute(Log logVo, long executeTime)
     {
         SysLog sysLog = new SysLog();
+         log.info("Log info :{}", logVo.toString());
 
          // 获取request
          HttpServletRequest request = HttpContextTool.getHttpServletRequest();

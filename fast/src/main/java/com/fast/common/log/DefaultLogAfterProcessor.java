@@ -16,7 +16,7 @@ public class DefaultLogAfterProcessor implements ILogAfterProcessor
 {
     
     @Override
-    public void afterExecute(Log logVo, long executeTime)
+    public void execute(Log logVo, long executeTime)
     {
         log.debug("after log info:{}", logVo.toString());
     }

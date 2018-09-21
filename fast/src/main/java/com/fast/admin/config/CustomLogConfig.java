@@ -11,6 +11,7 @@
  */
 package com.fast.admin.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,16 +25,19 @@ import com.fast.common.log.aop.LogAop;
  * @author: yuyanan
  * @date:   2018年9月21日      
  */
-@Configuration
 @EnableAutoLog
-public class CustomLogConfig 
+@Configuration
+public class CustomLogConfig
 {
     
     @Bean
-    public ILogAfterProcessor setAfterProcessor()
+    public ILogAfterProcessor setAfterProcessor(LogAop logAop)
     {
         ILogAfterProcessor after =  new CustomLogAfterProcessor();
+        logAop.setAfterProcessor(after);
         return after;
     }
-    
+
+
+
 }

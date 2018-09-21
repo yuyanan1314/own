@@ -14,7 +14,7 @@ public interface ILogBeforeProcessor
     /**
      * 日志处理
      * 
-     * @param log Log
+     * @param logVo Log
      */
-    public void execute(Log logVo);
+     void execute(Log logVo);
 }
