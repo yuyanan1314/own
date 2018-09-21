@@ -27,7 +27,6 @@ import com.fast.common.log.aop.LogAop;
  * @author: yuyanan
  * @date: 2018年9月21日
  */
-// 存在LogAop这个类才装配当前类
 @Configuration
 @ConditionalOnMissingBean(LogAop.class)
 public class LogAopDefaultConfiguration extends LogAop
