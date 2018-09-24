@@ -26,8 +26,6 @@ import com.fast.common.log.annotation.Log;
 public class LogAop implements InitializingBean
 {
     
-    private LogAopProperties logAopProperties;
-    
     /**
      * 日志 前处理器
      */
@@ -45,11 +43,6 @@ public class LogAop implements InitializingBean
         
     }
     
-    // 禁止显示的声明
-    public LogAop(LogAopProperties logAopProperties)
-    {
-        this.logAopProperties = logAopProperties;
-    }
     
     /**
      * 初始化完成

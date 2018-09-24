@@ -19,7 +19,7 @@ import com.fast.common.util.queue.Bill;
 import com.fast.common.util.queue.BillBlockQueue;
 
 /**
- * 一个生产者与消费者的demo
+ * 小票队列生产者与消费者demo
  * @author: yuyanan
  * @date: 2018年9月23日
  */
@@ -48,7 +48,7 @@ public class Demo
                     }
                     catch (InterruptedException e)
                     {
-                        //TODO 如果发生了中断信号 不做处理 保持线程继续执行 只需记录日志
+                        //TODO 如果发生了中断信号 不做处理  保持线程继续执行 只需记录日志
                         e.printStackTrace();
                     }
                 }

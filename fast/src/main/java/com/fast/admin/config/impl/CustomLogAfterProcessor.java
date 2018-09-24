@@ -41,7 +41,7 @@ public class CustomLogAfterProcessor implements ILogAfterProcessor
     @Override
     public void execute(Log logVo, long executeTime)
     {
-        SysLog sysLog = new SysLog();
+         SysLog sysLog = new SysLog();
          log.info("after log value:{}", logVo.value());
 
          // 获取request
@@ -50,8 +50,6 @@ public class CustomLogAfterProcessor implements ILogAfterProcessor
          sysLog.setIp(IpTool.getIpAddr(request));
          // 用户名
          sysLog.setTime((int) executeTime);
-         // 系统当前时间
-         Date date = new Date();
          // 保存系统日志
          logService.save(sysLog);
         

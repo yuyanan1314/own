@@ -18,7 +18,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.fast.common.log.aop.EnableAutoLog;
+import com.fast.common.log.annotation.EnableAutoLog;
 
 /**
  * 程序入口类

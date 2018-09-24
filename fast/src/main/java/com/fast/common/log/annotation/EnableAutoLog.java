@@ -1,4 +1,4 @@
-package com.fast.common.log.aop;
+package com.fast.common.log.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
 
-import com.fast.common.log.annotation.Log;
+import com.fast.common.log.aop.LogAopAutoConfiguration;
 
 /**
  * 开启{@link Log}处理 提供默认约定的前后日志处理器

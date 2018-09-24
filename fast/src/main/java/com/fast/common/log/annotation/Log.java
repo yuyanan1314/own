@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.fast.common.log.aop.EnableAutoLog;
+//import com.fast.common.log.aop.EnableAutoLog;
 import com.fast.common.log.aop.LogAop;
 
 /**
