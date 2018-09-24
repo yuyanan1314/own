@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +15,12 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fast.admin.model.bo.SysUserAddBo;
+import com.fast.admin.model.bo.SysUserEditBo;
 import com.fast.admin.model.bo.SysUserPageBo;
 import com.fast.common.api.ApiException;
 import com.fast.common.supers.SuperServiceImpl;
+import com.fast.common.util.BeanTool;
 import com.fast.user.dao.SysUserDao;
 import com.fast.user.entity.SysRole;
 import com.fast.user.entity.SysUser;
@@ -57,31 +62,23 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
         
         if (StringUtils.isAllBlank(username))
         {
-            throw ApiException.ApiExceptionBuilder.warn("用户名不能为空");
+            throw ApiException.Builder.warn("用户名不能为空");
         }
         if (StringUtils.isAllBlank(password))
         {
-            throw ApiException.ApiExceptionBuilder.warn("用户名不能为空");
+            throw ApiException.Builder.warn("用户名不能为空");
         }
         Wrapper<SysUser> wrapper = new QueryWrapper<SysUser>().eq("username", username);
         SysUser sysUser = this.baseMapper.selectOne(wrapper);
         if (sysUser == null)
         {
-            throw ApiException.ApiExceptionBuilder.warn("帐号不存在");
+            throw ApiException.Builder.warn("帐号不存在");
         }
         if (!password.trim().equals(sysUser.getPassword().trim()))
         {
-            throw ApiException.ApiExceptionBuilder.warn("密码不正确");
+            throw ApiException.Builder.warn("密码不正确");
         }
         
-        // 查询用户角色
-        SysUserRole userRole = userRoleService.getOne(new QueryWrapper<SysUserRole>().eq("user_id", sysUser.getId()));
-        if (userRole != null)
-        {
-            SysRole role = roleService.getById(userRole.getRoleId());
-            sysUser.setRoleId(role.getId());
-            sysUser.setRoleName(role.getRoleName());
-        }
         return sysUser;
     }
     
@@ -97,16 +94,16 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
     {
         if (StringUtils.isBlank(id))
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+            throw ApiException.Builder.error("参数[id]为空");
         }
         if (sexEnum == null)
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[sexEnum]为空");
+            throw ApiException.Builder.error("参数[sexEnum]为空");
         }
         SysUser sysUser = getById(id);
         if (sysUser == null)
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[id]无效");
+            throw ApiException.Builder.error("参数[id]无效");
         }
         sysUser.setSex(sexEnum);
         updateById(sysUser);
@@ -124,16 +121,16 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
     {
         if (StringUtils.isBlank(id))
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+            throw ApiException.Builder.error("参数[id]为空");
         }
         if (statusEnum == null)
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[statusEnum]为空");
+            throw ApiException.Builder.error("参数[statusEnum]为空");
         }
         SysUser sysUser = getById(id);
         if (sysUser == null)
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[id]无效");
+            throw ApiException.Builder.error("参数[id]无效");
         }
         sysUser.setStatus(statusEnum);
         updateById(sysUser);
@@ -145,11 +142,11 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
     {
         if (StringUtils.isBlank(id))
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+            throw ApiException.Builder.error("参数[id]为空");
         }
         if (id.equals(admin_id))
         {
-            throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
+            throw ApiException.Builder.warn("admin帐号是系统管理员,不允许删除");
         }
         
         // 删除用户角色
@@ -173,7 +170,7 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
         List<String> idList = Lists.newArrayList(ids);
         if (idList.contains(admin_id))
         {
-            throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
+            throw ApiException.Builder.warn("admin帐号是系统管理员,不允许删除");
         }
         // 删除用户角色
         List<SysUserRole> roList = userRoleService.list(new QueryWrapper<SysUserRole>().in("id", idList));
@@ -190,7 +187,7 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
     {
         if (pageBo == null)
         {
-            throw ApiException.ApiExceptionBuilder.error("参数[SysUserPageBo]为空");
+            throw ApiException.Builder.error("参数[SysUserPageBo]为空");
         }
         
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
@@ -221,36 +218,98 @@ public class SysUserServiceImpl extends SuperServiceImpl<SysUserDao, SysUser> im
         
         // 查询角色信息
         List<String> userIds = page.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
-        if (userIds.isEmpty())
-        {
-            return page;
-        }
-        // 差roleId
-        List<SysUserRole> userRoles = userRoleService.list(new QueryWrapper<SysUserRole>().in("user_id", userIds));
-        if (userRoles.isEmpty())
-        {
-            return page;
-        }
-        Map<String, String> userRoleMap =
-            userRoles.stream().collect(Collectors.toMap(SysUserRole::getUserId, SysUserRole::getRoleId));
+        Map<String, SysRole> roleMap = roleService.getMapByUserIds(userIds);
+        
         page.getRecords().forEach(x -> {
-            x.setRoleId(userRoleMap.get(x.getId()));
-        });
-        // 赋值roleName
-        List<String> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-        List<SysRole> roles = roleService.list(new QueryWrapper<SysRole>().in("id", roleIds));
-        if (roles.isEmpty())
-        {
-            return page;
-        }
-        Map<String, String> roleMap =
-            roles.stream().collect(Collectors.toMap(SysRole::getId, SysRole::getRoleName, (value1, value2) -> {
-                return value2;
-            }));
-        page.getRecords().forEach(x -> {
-            x.setRoleName(roleMap.get(x.getRoleId()));
+            x.setRole(roleMap.get(x.getId()));
         });
         return page;
     }
     
+    @Override
+    public SysUser getUser(String id)
+    {
+        SysUser user = getById(id);
+        if (user == null)
+        {
+            return user;
+        }
+        SysRole role = roleService.getByUserId(user.getId());
+        user.setRole(role);
+        return user;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.fast.user.service.SysUserService#addUser(com.fast.admin.model.bo.SysUserAddBo)
+     */
+    @Override
+    public void addUser(SysUserAddBo addBo)
+    {
+        if (addBo == null)
+        {
+            throw ApiException.Builder.error("参数[user]为空");
+        }
+        try
+        {
+            SysUser user = new SysUser();
+            BeanUtils.copyProperties(addBo, user);
+            user.setStatus(SysUserStatusEnum.OPEN);
+            save(user);
+            // 添加用户角色关系
+            SysUserRole userRole = new SysUserRole();
+            userRole.setUserId(user.getId());
+            userRole.setRoleId(addBo.getRoleId());
+            userRoleService.save(userRole);
+        }
+        catch (DuplicateKeyException e)
+        {
+            throw ApiException.Builder.warn("用户名已存在");
+        }
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.fast.user.service.SysUserService#editUser(com.fast.admin.model.bo.SysUserEditBo)
+     */
+    @Override
+    public void editUser(SysUserEditBo user)
+    {
+        if (user == null)
+        {
+            throw ApiException.Builder.error("参数[user]为空");
+        }
+        if (user.getId() == null)
+        {
+            throw ApiException.Builder.error("参数[userId]为空");
+        }
+        try
+        {
+            // 更新用户
+            SysUser old = getById(user.getId());
+            if (old == null)
+            {
+                throw ApiException.Builder.error("参数[userId]无效");
+            }
+            BeanTool.copyProperties(user, old);
+            updateById(old);
+        }
+        catch (DuplicateKeyException e)
+        {
+            throw ApiException.Builder.warn("用户名已存在");
+        }
+        // 维护用户角色关系
+        if (StringUtils.isNotBlank(user.getRoleId()))
+        {
+            SysUserRole userRole = userRoleService.getOne(new QueryWrapper<SysUserRole>().eq("user_id", user.getId()));
+            if (userRole == null)
+            {
+                throw ApiException.Builder.error("用户角色数据关系错误");
+            }
+            userRole.setRoleId(user.getRoleId());
+            userRoleService.updateById(userRole);
+        }
+    }
 }

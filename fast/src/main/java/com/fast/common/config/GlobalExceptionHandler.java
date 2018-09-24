@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 		 * 数据关联删除异常
 		 */
 		if (e instanceof DataIntegrityViolationException) {
-			return ApiResult.fail(ApiErrorCode.ERROR.getCode(), "数据使用中,不允许删除");
+			return ApiResult.fail(ApiErrorCode.ERROR.getCode(), "数据关联唯一性限制");
 		}
 		
 		

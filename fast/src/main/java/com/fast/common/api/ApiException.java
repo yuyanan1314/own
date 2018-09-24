@@ -18,6 +18,7 @@ package com.fast.common.api;
  * @date 2018年9月11日
  */
 public class ApiException extends RuntimeException {
+    
 	/**
 	 * 错误码
 	 */
@@ -49,9 +50,13 @@ public class ApiException extends RuntimeException {
 		return errorCode;
 	}
 	
-	
-	
-	public static class ApiExceptionBuilder{
+	/**
+	 * 构造类
+	 *  
+	 * @author: yuyanan
+	 * @date:   2018年9月24日
+	 */
+	public static class Builder{
 		
 		public static ApiException warn(String message){
 			return new ApiException(ApiErrorCode.WARN, message);
@@ -64,7 +69,6 @@ public class ApiException extends RuntimeException {
 		public static ApiException error(String message){
 			return new ApiException(message);
 		}
-		
 		
 	}
 }

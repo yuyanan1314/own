@@ -23,6 +23,10 @@ public class SuperController {
     protected void setSessionUser(SysUser user) {
         SessionSysUser sessionSysUser = new SessionSysUser();
         BeanUtils.copyProperties(user,sessionSysUser);
+        if(user.getRole()!=null){
+            sessionSysUser.setRoleId(user.getRole().getId());
+            sessionSysUser.setRoleName(user.getRole().getRoleName());
+        }
         request.getSession().setAttribute(SESSION_USER, sessionSysUser);
     }
 

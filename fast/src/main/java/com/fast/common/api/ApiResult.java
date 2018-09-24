@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Optional;
 
-import com.fast.common.api.ApiException.ApiExceptionBuilder;
+import com.fast.common.api.ApiException.Builder;
 
 import lombok.Data;
 
@@ -81,7 +81,7 @@ public class ApiResult<T> {
 	 */
 	public Object serviceData() {
 		if (!ok()) {
-			throw ApiExceptionBuilder.error(this.msg);
+			throw Builder.error(this.msg);
 		}
 		return data;
 	}

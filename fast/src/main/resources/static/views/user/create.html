@@ -74,7 +74,7 @@
     	var datas = result.data.records;
     	var option = "";
     	$.each(datas,function(index,obj){
-    		option = '<option value="'+obj.id+'">'+obj.roleName+'</option>';
+    		option += '<option value="'+obj.id+'">'+obj.roleName+'</option>';
     	});
     	$('#sysRole').html(option);
     	form.render();

@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import com.fast.admin.model.bo.SysRolePageBo;
 import com.fast.common.api.ApiException;
 import com.fast.common.api.ApiResult;
 import com.fast.common.log.annotation.Log;
+import com.fast.common.util.BeanTool;
 import com.fast.user.entity.SysRole;
 import com.fast.user.service.SysRoleService;
 import com.fast.user.service.SysUserService;
@@ -51,7 +53,7 @@ public class SysRoleController extends BasicController {
 	@GetMapping("/list")
 	ApiResult<IPage<SysRole>> page(SysRolePageBo pageBo) {
 		if (pageBo == null) {
-			throw ApiException.ApiExceptionBuilder.error("参数[SysRolePageBo]为空");
+			throw ApiException.Builder.error("参数[SysRolePageBo]为空");
 		}
 
 		QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
@@ -77,7 +79,7 @@ public class SysRoleController extends BasicController {
 	@PostMapping("/add")
 	ApiResult<Object> add(@Validated SysRoleAddBo addBo) {
 		if (addBo == null) {
-			throw ApiException.ApiExceptionBuilder.error("参数[SysRoleAddBo]为空");
+			throw ApiException.Builder.error("参数[SysRoleAddBo]为空");
 		}
 		SysRole role = new SysRole();
 		BeanUtils.copyProperties(addBo, role);
@@ -90,13 +92,20 @@ public class SysRoleController extends BasicController {
 	@PostMapping("/dels")
 	ApiResult<Object> dels(@RequestParam("ids[]") String[] ids) {
 		if (ids == null || ids.length == 0) {
-			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+			throw ApiException.Builder.error("参数[id]为空");
 		}
 		List<String> idList = Lists.newArrayList(ids);
 		if (idList.contains(SysUserService.admin_id)) {
-			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
+			throw ApiException.Builder.warn("admin帐号是系统管理员,不允许删除");
 		}
-		roleService.removeByIds(idList);
+		try
+        {
+		    roleService.removeByIds(idList);
+        }
+        catch (DataIntegrityViolationException e)
+        {
+            throw ApiException.Builder.warn("角色被使用中,不允许删除");
+        }
 		return ApiResult.ok(null);
 	}
 
@@ -105,12 +114,19 @@ public class SysRoleController extends BasicController {
 	@PostMapping("/del")
 	ApiResult<Object> del(String id) {
 		if (StringUtils.isBlank(id)) {
-			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+			throw ApiException.Builder.error("参数[id]为空");
 		}
 		if (id.equals(SysUserService.admin_id)) {
-			throw ApiException.ApiExceptionBuilder.warn("admin帐号是系统管理员,不允许删除");
+			throw ApiException.Builder.warn("admin帐号是系统管理员,不允许删除");
 		}
-		roleService.removeById(id);
+		try
+        {
+		    roleService.removeById(id);
+        }
+        catch (DataIntegrityViolationException e)
+        {
+            throw ApiException.Builder.warn("角色被使用中,不允许删除");
+        }
 		return ApiResult.ok(null);
 	}
 
@@ -119,7 +135,7 @@ public class SysRoleController extends BasicController {
 	@PostMapping("/get")
 	ApiResult<SysRole> get(String id) {
 		if (StringUtils.isBlank(id)) {
-			throw ApiException.ApiExceptionBuilder.error("参数[id]为空");
+			throw ApiException.Builder.error("参数[id]为空");
 		}
 		SysRole user = roleService.getById(id);
 		return ApiResult.ok(user);
@@ -130,20 +146,20 @@ public class SysRoleController extends BasicController {
 	@PostMapping("/edit")
 	ApiResult<Object> edit(@Validated SysRoleEditBo user) {
 		if (user == null) {
-			throw ApiException.ApiExceptionBuilder.error("参数[user]为空");
+			throw ApiException.Builder.error("参数[user]为空");
 		}
 		if (user.getId() == null) {
-			throw ApiException.ApiExceptionBuilder.error("参数[userId]为空");
+			throw ApiException.Builder.error("参数[userId]为空");
 		}
 		try {
 			SysRole old = roleService.getById(user.getId());
 			if (old == null) {
-				throw ApiException.ApiExceptionBuilder.error("参数[userId]无效");
+				throw ApiException.Builder.error("参数[userId]无效");
 			}
-			BeanUtils.copyProperties(user, old);
+			BeanTool.copyProperties(user, old);
 			roleService.updateById(old);
 		} catch (DuplicateKeyException e) {
-			throw ApiException.ApiExceptionBuilder.warn("角色名已存在");
+			throw ApiException.Builder.warn("角色名已存在");
 		}
 		return ApiResult.ok(null);
 	}

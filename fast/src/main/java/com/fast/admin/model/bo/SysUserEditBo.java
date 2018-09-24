@@ -52,4 +52,10 @@ public class SysUserEditBo implements Serializable{
     
     @ApiModelProperty("账号状态")
     private SysUserStatusEnum status;
+    
+    /**
+     * 角色id
+     */
+    @ApiModelProperty("角色id")
+    private String roleId;
 }

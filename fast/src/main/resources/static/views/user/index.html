@@ -108,7 +108,12 @@
         }
         , {field: 'username', title: '用户名'}
         , {field: 'realname', title: '姓名'}
-        , {field: 'roleName', title: '角色'}
+        , {field: 'role', title: '角色',templet: function (row) {
+        	if(row.role){
+        		return row.role.roleName;
+        	}
+            return "";
+        }}
         , {field: 'sex', title: '性别', templet: '#sexTemplate',}
         , {field: 'mobile', title: '手机号', align: 'center'}
         , {field: 'email', title: '邮箱'}
@@ -138,7 +143,6 @@
 
     //头工具栏事件
     table.on('toolbar(' + tableFilter + ')', function (obj) {
-      console.log(obj);
       var checkStatus = table.checkStatus(obj.config.id);
       switch (obj.event) {
           //新增

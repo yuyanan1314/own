@@ -3,6 +3,8 @@ package com.fast.user.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.fast.admin.model.bo.SysUserAddBo;
+import com.fast.admin.model.bo.SysUserEditBo;
 import com.fast.admin.model.bo.SysUserPageBo;
 import com.fast.common.supers.SuperService;
 import com.fast.user.entity.SysUser;
@@ -63,4 +65,15 @@ public interface SysUserService extends SuperService<SysUser> {
      * @param id
      */
     void removeByIds(List<String> ids);
+    
+    /**
+     * 根据id查询用户信息 包括用户角色等
+     * @param id
+     * @return
+     */
+    SysUser getUser(String id);
+    
+    void addUser(SysUserAddBo addBo);
+    
+    void editUser(SysUserEditBo editBo);
 }

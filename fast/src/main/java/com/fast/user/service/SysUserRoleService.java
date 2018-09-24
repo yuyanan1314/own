@@ -1,5 +1,7 @@
 package com.fast.user.service;
 
+import java.util.List;
+
 import com.fast.user.entity.SysUserRole;
 import com.fast.common.supers.SuperService;
 
@@ -11,4 +13,17 @@ import com.fast.common.supers.SuperService;
  */
 public interface SysUserRoleService extends SuperService<SysUserRole> {
 	
+    /**
+     * 根据userId查询
+     * @param userId
+     * @return
+     */
+    SysUserRole getByUserId(String userId);
+    
+    /**
+     * 根据userIds查询
+     * @param userId
+     * @return
+     */
+    List<SysUserRole> getByUserId(List<String> userIds);
 }

@@ -49,7 +49,7 @@
             </div>
             <div class="layui-form-item">
               <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="sysUserAddForm">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="sysUserEditForm">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
               </div>
             </div>
@@ -73,27 +73,31 @@
     	var datas = result.data.records;
     	var option = "";
     	$.each(datas,function(index,obj){
-    		option = '<option value="'+obj.id+'">'+obj.roleName+'</option>';
+    		option += '<option value="'+obj.id+'">'+obj.roleName+'</option>';
     	});
     	$('#sysRole').html(option);
     	form.render();
+    	//根据id获取信息
+        app.post("/admin/sysUser/get", {id:params.id}, function(result) {
+        	 var pojo = result.data;
+        	 //表单赋值 name value
+        	 form.val('sysUserEditFormFilter', {
+        		 	"id": id
+        	        ,"username": pojo.username 
+        	        ,"realname": pojo.realname
+        	        ,"mobile": pojo.mobile 
+        	        ,"email": pojo.email 
+        	        ,"sex": pojo.sex.value
+        	        ,"status": pojo.status.value
+        	      })
+        	      if(pojo.role){
+        	    		 $('#sysRole').val(pojo.role.id); 
+        	    	 }
+        	      form.render();
+        });
     });
     
-    //根据id获取信息
-    app.post("/admin/sysUser/get", {id:params.id}, function(result) {
-    	 var pojo = result.data;
-    	 //表单赋值 name value
-    	 form.val('sysUserEditFormFilter', {
-    		 	"id": id
-    	        ,"username": pojo.username 
-    	        ,"realname": pojo.realname
-    	        ,"mobile": pojo.mobile 
-    	        ,"email": pojo.email 
-    	        ,"sex": pojo.sex.value
-    	        ,"status": pojo.status.value
-    	      })
-    	      form.render();
-    });
+    
 
     //自定义验证规则
     form.verify({
@@ -108,7 +112,7 @@
     //监听提交
     form.on('submit(sysUserEditForm)', function(data) {
       app.post("/admin/sysUser/edit", data.field, function(result) {
-        layer.msg(result.msg);
+    	  
         location.href = "#/user/index";
       });
       return false;
