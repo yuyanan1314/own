@@ -16,7 +16,10 @@ import com.fast.common.log.DefaultLogBeforeProcessor;
 import com.fast.common.log.annotation.Log;
 
 /**
- * 日志{@link Log}处理类
+ * 日志{@link Log}aop处理类
+ * <pre>
+ *  可分别进行前后处理
+ * </pre>
  *
  * @author yuyanan
  * @date 2018年9月21日
@@ -29,20 +32,17 @@ public class LogAop implements InitializingBean
     /**
      * 日志 前处理器
      */
-    // @Autowired(required = false)
     private ILogAfterProcessor afterProcessor;
     
     /**
      * 后日志处理器
      */
-    // @Autowired(required = false)
     private ILogBeforeProcessor beforeProcessor;
     
     public LogAop()
     {
         
     }
-    
     
     /**
      * 初始化完成
