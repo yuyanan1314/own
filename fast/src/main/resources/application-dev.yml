@@ -65,6 +65,8 @@ spring:
               log-slow-sql: true
               slow-sql-millis: 2000
 
+# log-aop: 
+#   enabled: true
 # MyBatis configuration
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/dao/*Mapper.xml

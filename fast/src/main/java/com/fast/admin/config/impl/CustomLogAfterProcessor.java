@@ -42,7 +42,7 @@ public class CustomLogAfterProcessor implements ILogAfterProcessor
     public void execute(Log logVo, long executeTime)
     {
         SysLog sysLog = new SysLog();
-         log.info("Log info :{}", logVo.toString());
+         log.info("after log value:{}", logVo.value());
 
          // 获取request
          HttpServletRequest request = HttpContextTool.getHttpServletRequest();
